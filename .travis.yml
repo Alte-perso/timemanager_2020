@@ -3,7 +3,7 @@ services:
 
 jobs:
   include:
-    - stage:
+    - stage: api
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - docker-compose build
       - docker push seg78/api_timemanager
