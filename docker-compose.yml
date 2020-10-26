@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  api:
+    container_name: api_timemanager
+    image: seg78/api_timemanager
+    build:
+      context: ./api/
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: api_dev
+      PGPORT: 5432
+      PGHOST: db
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+  db:
+    container_name: bdd_timemanager
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
