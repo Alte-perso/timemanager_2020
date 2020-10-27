@@ -1,9 +1,12 @@
-services:
+---
+services: 
   - docker
 
 jobs:
   include:
-    - stage: api
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - docker-compose build
-      - docker push seg78/api_timemanager
+    - stage: Deploy Back
+      script:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - docker-compose build
+        - docker push seg78/api_timemanage
+...
