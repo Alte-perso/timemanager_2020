@@ -26,5 +26,12 @@ services:
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
+  front:
+    container_name: front_timemanager
+    image: seg78/front_timemanager
+    build:
+      context: ./front/
+    ports:
+      - "8080:8080"
 volumes:
   pgdata:
