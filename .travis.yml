@@ -4,7 +4,7 @@ services:
 
 jobs:
   include:
-    - stage: Deploy Back
+    - stage: api travis
       script:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - docker-compose build
