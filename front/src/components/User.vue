@@ -61,7 +61,7 @@
             <v-text-field
               label="Password"
               outlined
-              :rules="[passwordRules, requiredRule]"
+              :rules="[rules.required, rules.password]"
               type="password"
               autocomplete
               v-model="user.password"
@@ -86,9 +86,30 @@
         <v-card-text class="mt-5" v-else>
           <div v-if="edit">
             <h2 class="mb-5">Edit user :</h2>
-            <v-text-field label="Username" outlined></v-text-field>
-            <v-text-field label="Email" outlined></v-text-field>
-            <v-text-field label="Password" outlined></v-text-field>
+            <form>
+              <v-text-field
+                label="Username"
+                outlined
+                autocomplete
+                :rules="usernameRules"
+                v-model="user.username"
+              ></v-text-field>
+              <v-text-field
+                label="Email"
+                outlined
+                :rules="emailRules"
+                autocomplete
+                v-model="user.email"
+              ></v-text-field>
+              <v-text-field
+                type="password"
+                label="Password"
+                outlined
+                :rules="[rules.required, rules.password]"
+                autocomplete
+                v-model="user.password"
+              ></v-text-field>
+            </form>
           </div>
 
           <div v-else>
@@ -132,7 +153,7 @@
           <v-btn v-if="edit" color="secondary" text @click="edit = false">
             Cancel
           </v-btn>
-          <v-btn v-if="edit" color="primary" text @click="edit = false">
+          <v-btn v-if="edit" color="primary" text @click="editUser()">
             Save
           </v-btn>
           <v-btn v-if="!edit" text color="red lighten-1" @click="deletePopup()">
@@ -164,7 +185,6 @@ export default {
         password: null,
         id: null
       },
-      requiredRule: [v => !!v || "Password is required"],
       usernameRules: [
         v => !!v || "Username is required",
         v => (v && v.length <= 15) || "Username must be less than 15 characters"
@@ -173,12 +193,15 @@ export default {
         v => !!v || "E-mail is required",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
-      passwordRules: value => {
-        const pattern = /(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9]).{8,}/;
-        return (
-          pattern.test(value) ||
-          "Invalid password : It must contain at least one capital letter and one number. 8 characters minimum."
-        );
+      rules: {
+        required: value => !!value || "Password is required.",
+        password: value => {
+          const pattern = /(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9]).{8,}/;
+          return (
+            pattern.test(value) ||
+            "Invalid password : It must contain at least one capital letter and one number. 8 characters minimum."
+          );
+        }
       }
     };
   },
@@ -189,25 +212,22 @@ export default {
     ...mapActions(["setUser", "setIsConnected"]),
     deletePopup() {
       if (confirm("Are you sure you want to delete this user ?")) {
-        //TODO: call delete user route
         this.deleteUser();
-        this.user.username = null;
-        this.user.id = null;
-        this.user.email = null;
-        this.setUser(this.user);
-        this.setIsConnected(false);
-        this.dialog = false;
         console.log("User was deleted to the database.");
       } else {
         console.log("No delete action");
       }
     },
+    initUser() {
+      this.user.username = null;
+      this.user.id = null;
+      this.user.email = null;
+      this.user.password = null;
+    },
     logout() {
       if (confirm("Are you sure you want to log out ?")) {
         //TODO: log out user (delete JWT cookie or localstorage)
-        this.user.username = null;
-        this.user.id = null;
-        this.user.email = null;
+        this.initUser();
         this.setUser(this.user);
         this.setIsConnected(false);
         console.log("User unlogged");
@@ -238,18 +258,16 @@ export default {
         .catch(errors => {
           this.loading = false;
           this.errorMessage = "Oops !!  an error occured ...";
+          setTimeout(() => (this.errorMessage = "").bind(this), 2000);
           console.log(errors.response);
         });
     },
     deleteUser() {
       this.loading = true;
       this.axios
-        .delete(process.env.VUE_APP_URL_API + "users" + this.userState.id)
+        .delete(process.env.VUE_APP_URL_API + "users/" + this.userState.id)
         .then(() => {
-          this.loading = false;
-          this.user.username = null;
-          this.user.id = null;
-          this.user.email = null;
+          this.initUser();
           this.setUser(this.user);
           this.setIsConnected(false);
           this.dialog = false;
@@ -257,9 +275,35 @@ export default {
         .catch(errors => {
           this.loading = false;
           this.errorMessage = "Oops !!  an error occured ...";
-          console.log(errors.response);
+          setTimeout(() => (this.errorMessage = ""), 2000);
+          console.log("ERROR : ", errors.response);
+        });
+    },
+    editUser() {
+      this.loading = true;
+      this.axios
+        .put(process.env.VUE_APP_URL_API + "users/" + this.userState.id, {
+          user: {
+            username: this.user.username,
+            email: this.user.email,
+            password: this.user.password
+          }
+        })
+        .then(() => {
+          this.edit = false;
+          this.loading = false;
+          this.setUser(this.user);
+        })
+        .catch(errors => {
+          this.loading = false;
+          this.errorMessage = "Oops !!  an error occured ...";
+          setTimeout(() => (this.errorMessage = ""), 2000);
+          console.log("ERROR : ", errors.response);
         });
     }
+  },
+  mounted() {
+    this.user = this.userState;
   }
 };
 </script>
@@ -269,7 +313,9 @@ export default {
   color: #2076d2;
   cursor: pointer;
 }
-
+.snackbar {
+  z-index: 10000;
+}
 .errorMessage {
   color: #e53935;
 }
