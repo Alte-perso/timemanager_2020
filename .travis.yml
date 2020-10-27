@@ -9,4 +9,5 @@ jobs:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - docker-compose build
         - docker push seg78/api_timemanager
+        - docker push seg78/front_timemanage
 ...
