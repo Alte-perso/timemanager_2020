@@ -6,12 +6,12 @@ services:
 
 jobs:
   include:
-    - stage: install python and pip3
-      addons:
-        apt:
-          packages:
-            - "python3"
-            - "python3-pip"
+#    - stage: install python and pip3
+#      addons:
+#        apt:
+#          packages:
+#            - "python3"
+#            - "python3-pip"
     - stage: install dependencies
       install:
         pip3 install awscli
