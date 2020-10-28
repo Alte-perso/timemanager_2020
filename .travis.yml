@@ -1,13 +1,43 @@
 ---
+cache: timemanager
+
 services: 
   - docker
 
 jobs:
   include:
+    - stage: install python and pip3
+      addons:
+        apt:
+          packages:
+            - "python3"
+            - "python3-pip"
+    - stage: install dependencies
+      install:
+        pip3 install awscli
     - stage: build and push images
       script:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - docker-compose build
         - docker push seg78/api_timemanager
         - docker push seg78/front_timemanager
+    - stage: push code to aws
+      before_deploy:
+        - zip -r timemanager *
+        - mkdir -p to_upload
+        - mv timemanager.zip to_upload/timemanager.zip
+      deploy:
+        - provider: s3
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_KEY
+          bucket: "timemanager-travis"
+        - provider: codedeploy
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_KEY
+          bucket: "timemanager-travis"
+          key: timemanager.zip
+          bundle_type: zip
+          application: timemanager
+          deployment_group: DeploymentGroup
+          region: eu-west-3
 ...
