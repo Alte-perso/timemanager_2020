@@ -6,7 +6,7 @@
         v-if="!(selectedItem.length == 0)"
         class="d-flex justify-end align-center mx-0"
       >
-        <v-btn color="warning" class="mr-5" icon>
+        <v-btn color="warning" class="mr-5" icon @click="deleteWorkingTimeSelected()">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-row>
@@ -62,6 +62,12 @@ export default {
     };
   },
   methods: {
+    deleteWorkingTimeSelected() {
+      this.selectedItem.forEach(id => {
+        this.deleteWorkingTime(id)
+      })
+      bus.$emit("getWorkingTimes");
+    },
     updateSelected(id) {
       if (this.selectedItem.indexOf(id) == -1) {
         this.selectedItem.push(id);
@@ -113,6 +119,13 @@ export default {
       } else {
         return "0";
       }
+    },
+    deleteWorkingTime(id) {
+      this.axios.delete(process.env.VUE_APP_URL_API + "workingtimes/" + id).then(() => {
+        console.log("===> Working time id: " + id + "succesful deleted !");
+      }).catch(error => {
+        console.log("Error :", error);
+      })
     },
     getWorkingTimes() {
       this.workingTimes = [];
