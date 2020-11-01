@@ -8,25 +8,29 @@
       resize="true"
       ></DonutChart>
   
-  <!-- Repartition of the number of hours spend to work per day -->
-  <BarChart
-    id="bar"
-    :data="barData"
-    bar-colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]'
-    grid="true"
-    grid-text-weight="bold"
-    resize="true">
-  </BarChart>
+    <!-- Repartition of the number of hours spend to work per day -->
+    <BarChart
+      id="bar"
+      :data="barData"
+      bar-colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]'
+      xkey='date'
+      ykeys='[ "Regular hours", "Sup payed hours", "Sup unpayed hours" ]' 
+      grid="true"
+      grid-text-weight="bold"
+      resize="true">
+    </BarChart>
 
-  <!-- Supl hour evolution -->
-  <LineChart
-    id="line"
-    :data="lineData"
-    line-colors='[ "#FF6384", "#36A2EB" ]'
-    grid="true"
-    grid-text-weight="bold"
-    resize="true">      
-  </LineChart>
+    <!-- Supl hour evolution -->
+    <LineChart
+      id="line"
+      :data="lineData"
+      line-colors='[ "#FF6384", "#36A2EB" ]'
+      xkey='date'
+      ykeys='sup hours' 
+      grid="true"
+      grid-text-weight="bold"
+      resize="true">      
+    </LineChart>
 
   <!-- Average paid hours per total hours -->
 
@@ -54,20 +58,16 @@ export default {
         { label: "Sup unpayed hours", value: 0 }
       ],
       lineData: [
-        { date: "01/10", "sup hours": 0 },
-        { date: "02/10", "sup hours": 1 },
-        { date: "03/10", "sup hours": 2 },
-        { date: "04/10", "sup hours": 3 },
-        { xkey: "date" },
-        { ykeys:"sup hours" },   
+        { date: '01', "sup hours": 0 },
+        { date: '02', "sup hours": 1 },
+        { date: '03', "sup hours": 4 },
+        { date: '04', "sup hours": 2 }, 
       ],  
-      chartData: [
-        { date: "01/10", "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":0 },
-        { date: "02/10", "Regular hours": 7, "Sup payed hours": 0, "Sup unpayed hours":0 },
-        { date: "03/10", "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":1 },
-        { date: "04/10", "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":0 },
-        { xkey:"date" },
-        { ykeys:'[ "Regular hours", "Sup payed hours", "Sup unpayed hours" ]' },
+      barData: [
+        { date: '01', "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":0 },
+        { date: '02', "Regular hours": 7, "Sup payed hours": 0, "Sup unpayed hours":0 },
+        { date: '03', "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":1 },
+        { date: '04', "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":0 },
       ]
     };
   }
