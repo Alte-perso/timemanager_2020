@@ -1,18 +1,19 @@
 defmodule MyAppWeb.ClockController do
   use MyAppWeb, :controller
 
-  alias MyApp.Account
-  alias MyApp.Account.Clock
+  alias MyApp.Accounts
+  alias MyApp.TimeTrackers
+  alias MyApp.TimeTrackers.Clock
 
   action_fallback MyAppWeb.FallbackController
 
   def index(conn, _params) do
-    clocks = Account.list_clocks()
+    clocks = TimeTrackers.list_clocks()
     render(conn, "index.json", clocks: clocks)
   end
 
   def create(conn, %{"clock" => clock_params}) do
-    with {:ok, %Clock{} = clock} <- Account.create_clock(clock_params) do
+    with {:ok, %Clock{} = clock} <- TimeTrackers.create_clock(clock_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
@@ -22,7 +23,7 @@ defmodule MyAppWeb.ClockController do
 
 
   def create_for_user(conn, %{"id" => id, "clock" => clock_params}) do
-    user = Account.get_user!(id)
+    user = Accounts.get_user!(id)
     IO.inspect(user)
     if (is_nil(user)) do
       conn
@@ -30,8 +31,8 @@ defmodule MyAppWeb.ClockController do
       |> put_view(TimeManagerWeb.ErrorView)
       |> render(:"404")
     else
-      with {:ok, %Clock{} = clock} <- Account.create_clock_for_user(id, clock_params) do
-            Account.check_endclock_create_workingtime(clock)
+      with {:ok, %Clock{} = clock} <- TimeTrackers.create_clock_for_user(id, clock_params) do
+            TimeTrackers.check_endclock_create_workingtime(clock)
             conn
             |> put_status(:created)
             |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
@@ -41,20 +42,20 @@ defmodule MyAppWeb.ClockController do
   end
 
   def show(conn, %{"id" => id}) do
-    clocks = Account.get_clock_by_user!(id)
+    clocks = TimeTrackers.get_clock_by_user!(id)
     render(conn, "index.json", clocks: clocks)
   end
 
   def update(conn, %{"id" => id, "clock" => clock_params}) do
-    clock = Account.get_clock!(id)
-    with {:ok, %Clock{} = clock} <- Account.update_clock(clock, clock_params) do
+    clock = TimeTrackers.get_clock!(id)
+    with {:ok, %Clock{} = clock} <- TimeTrackers.update_clock(clock, clock_params) do
       render(conn, "show.json", clock: clock)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    clock = Account.get_clock!(id)
-    with {:ok, %Clock{}} <- Account.delete_clock(clock) do
+    clock = TimeTrackers.get_clock!(id)
+    with {:ok, %Clock{}} <- TimeTrackers.delete_clock(clock) do
       send_resp(conn, :no_content, "")
     end
   end

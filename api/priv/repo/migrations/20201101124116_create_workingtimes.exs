@@ -5,11 +5,11 @@ defmodule MyApp.Repo.Migrations.CreateWorkingtimes do
     create table(:workingtimes) do
       add :start, :naive_datetime, null: false
       add :end, :naive_datetime, null: false
-      add :user, references(:users, on_delete: :delete_all), null: false
+      add :user_id, references(:users, type: :uuid, on_delete: :delete_all), null: false
 
       timestamps()
     end
 
-    create index(:workingtimes, [:user])
+    create index(:workingtimes, [:user_id])
   end
 end

@@ -1,21 +1,27 @@
 defmodule MyAppWeb.UserControllerTest do
   use MyAppWeb.ConnCase
 
-  alias MyApp.Account
-  alias MyApp.Account.User
+  alias MyApp.Accounts
+  alias MyApp.Accounts.User
 
   @create_attrs %{
     email: "some email",
+    firstname: "some firstname",
+    lastname: "some lastname",
+    password_hash: "some password_hash",
     username: "some username"
   }
   @update_attrs %{
     email: "some updated email",
+    firstname: "some updated firstname",
+    lastname: "some updated lastname",
+    password_hash: "some updated password_hash",
     username: "some updated username"
   }
-  @invalid_attrs %{email: nil, username: nil}
+  @invalid_attrs %{email: nil, firstname: nil, lastname: nil, password_hash: nil, username: nil}
 
   def fixture(:user) do
-    {:ok, user} = Account.create_user(@create_attrs)
+    {:ok, user} = Accounts.create_user(@create_attrs)
     user
   end
 
@@ -38,11 +44,12 @@ defmodule MyAppWeb.UserControllerTest do
       conn = get(conn, Routes.user_path(conn, :show, id))
 
       assert %{
-#               "id" => id,
-#               "email" => "some email",
-#               "username" => "some username"
-               "username" => "some username",
-               "email" => "some email"
+               "id" => id,
+               "email" => "some email",
+               "firstname" => "some firstname",
+               "lastname" => "some lastname",
+               "password_hash" => "some password_hash",
+               "username" => "some username"
              } = json_response(conn, 200)["data"]
     end
 
@@ -64,6 +71,9 @@ defmodule MyAppWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some updated email",
+               "firstname" => "some updated firstname",
+               "lastname" => "some updated lastname",
+               "password_hash" => "some updated password_hash",
                "username" => "some updated username"
              } = json_response(conn, 200)["data"]
     end

@@ -13,6 +13,11 @@ defmodule MyAppWeb.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,
-      email: user.email}
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      date: NaiveDateTime.to_string(user.inserted_at),
+      password: user.password_hash
+    }
   end
 end

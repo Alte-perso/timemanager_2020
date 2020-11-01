@@ -1,11 +1,12 @@
-defmodule MyApp.Account.Workingtime do
+defmodule MyApp.TimeTrackers.Workingtime do
   use Ecto.Schema
   import Ecto.Changeset
+  alias MyApp.Accounts.User
 
   schema "workingtimes" do
     field :end, :naive_datetime
     field :start, :naive_datetime
-    field :user, :id
+    belongs_to :user, User
 
     timestamps()
   end

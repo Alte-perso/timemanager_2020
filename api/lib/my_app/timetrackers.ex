@@ -1,12 +1,10 @@
-defmodule MyApp.Account do
+defmodule MyApp.TimeTrackers do
   @moduledoc """
-  The Account context.
+  The TimeTrackers context.
   """
 
   import Ecto.Query, warn: false
   alias MyApp.Repo
-
-  alias MyApp.Account.User
 
   @doc """
   Returns the list of users.
@@ -17,26 +15,26 @@ defmodule MyApp.Account do
       [%User{}, ...]
 
   """
-  def list_users(params) do
-    IO.inspect(params)
-    query = from i in User
-    if (params["email"]) do
-      query = from i in User, where: i.email == ^params["email"]
-      if (params["username"]) do
-        query = from i in User, where: i.email == ^params["email"], where: i.username == ^params["username"]
-        Repo.all(query)
-      else
-        Repo.all(query)
-      end
-    else
-      if (params["username"]) do
-        query = from i in User, where: i.username == ^params["username"]
-        Repo.all(query)
-      else
-        Repo.all(query)
-      end
-    end
-  end
+  # def list_users(params) do
+  #   IO.inspect(params)
+  #   query = from i in User
+  #   if (params["email"]) do
+  #     query = from i in User, where: i.email == ^params["email"]
+  #     if (params["username"]) do
+  #       query = from i in User, where: i.email == ^params["email"], where: i.username == ^params["username"]
+  #       Repo.all(query)
+  #     else
+  #       Repo.all(query)
+  #     end
+  #   else
+  #     if (params["username"]) do
+  #       query = from i in User, where: i.username == ^params["username"]
+  #       Repo.all(query)
+  #     else
+  #       Repo.all(query)
+  #     end
+  #   end
+  # end
   @doc """
   Gets a single user.
 
@@ -51,13 +49,13 @@ defmodule MyApp.Account do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  # def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user_login(username, password) do
-    password = Base.encode16(:crypto.hash(:sha256,  "#{password}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
-    query = from i in User, where: i.username == ^username, where: i.password == ^password
-    Repo.all(query)
-  end
+  # def get_user_login(username, password) do
+  #   password = Base.encode16(:crypto.hash(:sha256,  "#{password}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
+  #   query = from i in User, where: i.username == ^username, where: i.password == ^password
+  #   Repo.all(query)
+  # end
 
   @doc """
   Creates a user.
@@ -71,14 +69,14 @@ defmodule MyApp.Account do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user(attrs \\ %{}) do
-    hashedpass = is_nil(attrs["password"]) && attrs.password || attrs["password"]
-    password = Base.encode16(:crypto.hash(:sha256, "#{hashedpass}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
-    %User{}
-    |> User.changeset(attrs)
-    |> User.changeset(%{password: password})
-    |> Repo.insert()
-  end
+  # def create_user(attrs \\ %{}) do
+  #   hashedpass = is_nil(attrs["password"]) && attrs.password || attrs["password"]
+  #   password = Base.encode16(:crypto.hash(:sha256, "#{hashedpass}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
+  #   %User{}
+  #   |> User.changeset(attrs)
+  #   |> User.changeset(%{password: password})
+  #   |> Repo.insert()
+  # end
 
   @doc """
   Updates a user.
@@ -92,11 +90,11 @@ defmodule MyApp.Account do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
-  end
+  # def update_user(%User{} = user, attrs) do
+  #   user
+  #   |> User.changeset(attrs)
+  #   |> Repo.update()
+  # end
 
   @doc """
   Deletes a user.
@@ -110,9 +108,9 @@ defmodule MyApp.Account do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_user(%User{} = user) do
-    Repo.delete(user)
-  end
+  # def delete_user(%User{} = user) do
+  #   Repo.delete(user)
+  # end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
@@ -123,11 +121,11 @@ defmodule MyApp.Account do
       %Ecto.Changeset{data: %User{}}
 
   """
-  def change_user(%User{} = user) do
-    User.changeset(user, %{})
-  end
+  # def change_user(%User{} = user) do
+  #   User.changeset(user, %{})
+  # end
 
-  alias MyApp.Account.Workingtime
+  alias MyApp.TimeTrackers.Workingtime
 
   @doc """
   Returns the list of workingtimes.
@@ -140,6 +138,7 @@ defmodule MyApp.Account do
   """
   def list_workingtimes do
     Repo.all(Workingtime)
+    |> Repo.preload(:user)
   end
 
   def list_workingtimes(params) do
@@ -273,7 +272,7 @@ end
     Workingtime.changeset(workingtime, %{})
   end
 
-  alias MyApp.Account.Clock
+  alias MyApp.TimeTrackers.Clock
 
   @doc """
   Returns the list of clocks.

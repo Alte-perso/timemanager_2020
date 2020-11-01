@@ -1,18 +1,18 @@
 defmodule MyAppWeb.UserController do
   use MyAppWeb, :controller
 
-  alias MyApp.Account
-  alias MyApp.Account.User
+  alias MyApp.Accounts
+  alias MyApp.Accounts.User
 
   action_fallback MyAppWeb.FallbackController
 
-  def index(conn, params) do
-    users = Account.list_users(params)
+  def index(conn, _params) do
+    users = Accounts.list_users()
     render(conn, "index.json", users: users)
   end
 
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Account.create_user(user_params) do
+    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
@@ -21,20 +21,22 @@ defmodule MyAppWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Account.get_user!(id)
+    user = Accounts.get_user!(id)
     render(conn, "show.json", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Account.get_user!(id)
-    with {:ok, %User{} = user} <- Account.update_user(user, user_params) do
+    user = Accounts.get_user!(id)
+
+    with {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    user = Account.get_user!(id)
-    with {:ok, %User{}} <- Account.delete_user(user) do
+    user = Accounts.get_user!(id)
+
+    with {:ok, %User{}} <- Accounts.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
   end
