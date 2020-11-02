@@ -67,8 +67,8 @@ defmodule MyApp.Account do
   end
 
   def get_user_login(username, password) do
-    password = Base.encode16(:crypto.hash(:sha256,  "#{password}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
-    query = from i in User, where: i.username == ^username, where: i.password == ^password
+    password_hash = Base.encode16(:crypto.hash(:sha256,  "#{password}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
+    query = from u in User, where: u.username == ^username, where: u.password_hash == ^password_hash
     Repo.all(query)
   end
 
