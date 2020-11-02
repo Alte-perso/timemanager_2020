@@ -11,14 +11,14 @@ defmodule MyAppWeb.ClockController do
     render(conn, "index.json", clocks: clocks)
   end
 
-  def create(conn, %{"clock" => clock_params}) do
-    with {:ok, %Clock{} = clock} <- Account.create_clock(clock_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-      |> render("show.json", clock: clock)
-    end
-  end
+  # def create(conn, %{"clock" => clock_params}) do
+  #   with {:ok, %Clock{} = clock} <- Account.create_clock(clock_params) do
+  #     conn
+  #     |> put_status(:created)
+  #     |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
+  #     |> render("show.json", clock: clock)
+  #   end
+  # end
 
 
   def create_for_user(conn, %{"id" => id, "clock" => clock_params}) do
@@ -27,15 +27,15 @@ defmodule MyAppWeb.ClockController do
     if (is_nil(user)) do
       conn
       |> put_status(:not_found)
-      |> put_view(TimeManagerWeb.ErrorView)
+      |> put_view(MyAppWeb.ErrorView)
       |> render(:"404")
     else
-      with {:ok, %Clock{} = clock} <- Account.create_clock_for_user(id, clock_params) do
+      with {:ok, %Clock{} = clock} <- Account.create_clock_for_user(user, clock_params) do
             Account.check_endclock_create_workingtime(clock)
             conn
             |> put_status(:created)
             |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-            |> render("show.json", clock: clock)
+            |> render("clockWithUser.json", clock: clock, user: user)
       end
     end
   end

@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :my_app, MyApp.Repo,
-  username: "mluczak",
-  password: "123soleil",
+  username: "manuelkonrath",
+  password: "root",
   database: "api_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,

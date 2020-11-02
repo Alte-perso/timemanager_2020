@@ -6,7 +6,7 @@ defmodule MyApp.Account do
   import Ecto.Query, warn: false
   alias MyApp.Repo
 
-  alias MyApp.Account.User
+  alias MyApp.Account.{User, Clock, Workingtime}
 
   @doc """
   Returns the list of users.
@@ -25,15 +25,19 @@ defmodule MyApp.Account do
       if (params["username"]) do
         query = from i in User, where: i.email == ^params["email"], where: i.username == ^params["username"]
         Repo.all(query)
+        |> Repo.preload(:clocks) 
       else
         Repo.all(query)
+        |> Repo.preload(:clocks)
       end
     else
       if (params["username"]) do
         query = from i in User, where: i.username == ^params["username"]
         Repo.all(query)
+        |> Repo.preload(:clocks)
       else
         Repo.all(query)
+        |> Repo.preload(:clocks)
       end
     end
   end
@@ -51,7 +55,11 @@ defmodule MyApp.Account do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    User
+    |> Repo.get!(id)
+    |> Repo.preload(:clocks)
+  end
 
   def get_user_login(username, password) do
     password = Base.encode16(:crypto.hash(:sha256,  "#{password}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
@@ -127,7 +135,7 @@ defmodule MyApp.Account do
     User.changeset(user, %{})
   end
 
-  alias MyApp.Account.Workingtime
+
 
   @doc """
   Returns the list of workingtimes.
@@ -273,7 +281,7 @@ end
     Workingtime.changeset(workingtime, %{})
   end
 
-  alias MyApp.Account.Clock
+
 
   @doc """
   Returns the list of clocks.
@@ -284,8 +292,10 @@ end
       [%Clock{}, ...]
 
   """
-  def list_clocks do
-    Repo.all(Clock)
+   def list_clocks do
+   Clock
+   |> Repo.all()
+   |> Repo.preload(:user)
   end
 
   @doc """
@@ -302,11 +312,17 @@ end
       ** (Ecto.NoResultsError)
 
   """
-  def get_clock!(id), do: Repo.get!(Clock, id)
+  def get_clock!(id) do
+    Clock
+    |> Repo.get!(id)
+    |> Repo.preload(:user)
+  end
 
   def get_clock_by_user!(id) do
-    query = from i in Clock, where: i.user == ^id
-    Repo.all(query)
+    Clock
+    |> where([c], c.user_id == ^id )
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -321,18 +337,27 @@ end
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clock(attrs \\ %{}) do
-    %Clock{}
+  # def create_clock(attrs \\ %{}) do
+  #   %Clock{}
+  #   |> Clock.changeset(attrs)
+  #   |> Repo.insert()
+  # end
+
+
+  def create_clock_for_user(%User{} = user, attrs \\ %{}) do
+    IO.inspect(user)
+    user
+    |> Ecto.build_assoc(:clocks)
     |> Clock.changeset(attrs)
     |> Repo.insert()
   end
 
-  def create_clock_for_user(id, attrs \\ %{}) do
-    cursor = %{time: attrs["time"], status: attrs["status"], user: id}
-    %Clock{}
-      |> Clock.changeset(cursor)
-      |> Repo.insert()
-  end
+  # def create_clock_for_user(id, attrs \\ %{}) do
+  #   cursor = %{time: attrs["time"], status: attrs["status"], user: id}
+  #   %Clock{}
+  #     |> Clock.changeset(cursor)
+  #     |> Repo.insert()
+  # end
 
   def check_endclock_create_workingtime(clock) do
     if (clock.status == true) do
