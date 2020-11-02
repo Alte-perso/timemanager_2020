@@ -1,40 +1,54 @@
 <template>
   <div class="home">
+    <h1>Short term indicator</h1>
+    <!-- Repartition of the number of hours spend to work per day -->
+    <BarChart
+      id="bar"
+      :data="barData"
+      bar-colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]'
+      xkey='day'
+      ykeys='[ "RegularHours", "SupPayedHours", "SupUnpayedHours" ]' 
+      grid="true"
+      grid-text-weight="bold"
+      resize="true">
+    </BarChart>
+    <!-- Supl hour evolution -->
+    <LineChart
+      id="line"
+      :data="lineData"
+      line-colors='[ "#FF6384", "#36A2EB" ]'
+      xkey='day'
+      ykeys='["SupHours"]' 
+      grid="true"
+      grid-text-weight="bold"
+      resize="true">      
+    </LineChart>
+    <h1>Mid term indicator</h1>
+    <!-- Average paid hours per total hours -->
+    <template v-if="moy_hsup_htot < 0.3 ">
+      <v-alert
+        type="success"
+      >Taux d'écart moyen heures sup/heures réglementaire: {{ moy_hsup_htot }}</v-alert>
+    </template>
+    <template v-else-if="moy_hsup_htot > 0.4" >
+      <v-alert
+        type="error"
+      >Taux d'écart moyen heures sup/heures réglementaire: {{ moy_hsup_htot }}</v-alert>
+    </template>
+    <template v-else>
+      <v-alert
+        type="warning"
+      >Taux d'écart moyen heures sup/heures réglementaire: {{ moy_hsup_htot }}</v-alert>   
+    </template>
+    <h1>Long term indicator</h1>
     <!-- Time per project -->
     <DonutChart
       id="donut"
       :data="donutData"
       colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]'
       resize="true"
-      ></DonutChart>
-  
-    <!-- Repartition of the number of hours spend to work per day -->
-    <BarChart
-      id="bar"
-      :data="barData"
-      bar-colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]'
-      xkey='date'
-      ykeys='[ "Regular hours", "Sup payed hours", "Sup unpayed hours" ]' 
-      grid="true"
-      grid-text-weight="bold"
-      resize="true">
-    </BarChart>
-
-    <!-- Supl hour evolution -->
-    <LineChart
-      id="line"
-      :data="lineData"
-      line-colors='[ "#FF6384", "#36A2EB" ]'
-      xkey='date'
-      ykeys='sup hours' 
-      grid="true"
-      grid-text-weight="bold"
-      resize="true">      
-    </LineChart>
-
-  <!-- Average paid hours per total hours -->
-
-  </div>  
+    ></DonutChart>
+  </div>
 </template>
 
 <script>
@@ -52,24 +66,32 @@ export default {
   },
   data() {
     return {
+      moy_hsup_htot: 0.5,
       donutData: [
         { label: "Regular hours", value: 8 },
         { label: "Sup payed hours", value: 1 },
         { label: "Sup unpayed hours", value: 0 }
-      ],
-      lineData: [
-        { date: '01', "sup hours": 0 },
-        { date: '02', "sup hours": 1 },
-        { date: '03', "sup hours": 4 },
-        { date: '04', "sup hours": 2 }, 
       ],  
       barData: [
-        { date: '01', "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":0 },
-        { date: '02', "Regular hours": 7, "Sup payed hours": 0, "Sup unpayed hours":0 },
-        { date: '03', "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":1 },
-        { date: '04', "Regular hours": 8, "Sup payed hours": 1, "Sup unpayed hours":0 },
+        { day: 'monday', RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
+        { day: 'tuesday', RegularHours: 7, SupPayedHours: 0, SupUnpayedHours:0 },
+        { day: 'wendsday', RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:1 },
+        { day: 'thirsday', RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
+      ],
+      lineData: [
+        { day: 'monday', SupHours: 0 },
+        { day: 'tuesday', SupHours: 1 },
+        { day: 'wendsday', SupHours: 4 },
+        { day: 'thirsday', SupHours: 2 }, 
       ]
     };
   }
 };
 </script>
+
+<style lang="scss" module>
+h1 {
+  color:white;
+  font-style:italic;
+}
+</style>
