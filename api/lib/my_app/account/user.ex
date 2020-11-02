@@ -6,7 +6,8 @@ defmodule MyApp.Account.User do
   schema "users" do
     field :username, :string
     field :email, :string
-    field :password, :string
+    field :password, :string, virtual: true
+    field :password_hash, :string
     field :firstname, :string
     field :lastname, :string
     has_many :clocks, Clock
@@ -24,5 +25,16 @@ defmodule MyApp.Account.User do
     |> validate_length(:password, min: 8)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
+    |> put_hashed_password
+  end
+
+  defp put_hashed_password(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: password}}
+        ->
+          put_change(changeset, :password_hash, Base.encode16(:crypto.hash(:sha256, "#{password}_s3cr3tp4s$xXxX_______try_to_crack_this_lol")))
+      _ ->
+          changeset
+    end
   end
 end

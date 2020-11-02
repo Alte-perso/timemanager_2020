@@ -85,11 +85,11 @@ defmodule MyApp.Account do
 
   """
   def create_user(attrs \\ %{}) do
-    hashedpass = is_nil(attrs["password"]) && attrs.password || attrs["password"]
-    password = Base.encode16(:crypto.hash(:sha256, "#{hashedpass}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
+    # hashedpass = is_nil(attrs["password"]) && attrs.password || attrs["password"]
+    # password = Base.encode16(:crypto.hash(:sha256, "#{hashedpass}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
     %User{}
     |> User.changeset(attrs)
-    |> User.changeset(%{password: password})
+    # |> User.changeset(%{password: password})
     |> Repo.insert()
   end
 
