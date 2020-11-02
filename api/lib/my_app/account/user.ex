@@ -23,8 +23,7 @@ defmodule MyApp.Account.User do
     |> validate_required([:username, :email, :password])
     |> validate_format(:email, ~r/(\w+)@([\w+)\.([\w.]{2,4})/)
     |> validate_length(:password, min: 8)
-    |> unique_constraint(:username)
-    |> unique_constraint(:email)
+    |> unique_constraint([:email, :username])
     |> put_hashed_password
   end
 
