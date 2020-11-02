@@ -23,23 +23,28 @@ defmodule MyAppWeb.ClockController do
 
 
   def create_for_user(conn, %{"id" => id, "clock" => clock_params}) do
-    user = Accounts.get_user!(id)
-    IO.inspect(user)
-    if (is_nil(user)) do
-      conn
-      |> put_status(:not_found)
-      |> put_view(TimeManagerWeb.ErrorView)
-      |> render(:"404")
-    else
-      with {:ok, %Clock{} = clock} <- TimeTrackers.create_clock_for_user(id, clock_params) do
-            TimeTrackers.check_endclock_create_workingtime(clock)
-            conn
-            |> put_status(:created)
-            |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-            |> render("show.json", clock: clock)
+    case Ecto.UUID.cast(id) do
+      :error ->
+        conn 
+        |> put_status(400) 
+        |> render("error.json", %{message: "User id not good"})
+      {:ok, uuid} ->
+        case Accounts.get_user!(uuid) do
+          {:ok, user} ->
+            with {:ok, %Clock{} = clock} <- TimeTrackers.create_clock_for_user(id, clock_params) do
+              TimeTrackers.check_endclock_create_workingtime(clock)
+              conn
+              |> put_status(:created)
+              |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
+              |> render("show.json", clock: clock)
+            end
+          _ ->
+            conn |> put_status(404) |> render("error.json", %{message: "User not found"})
+        end
       end
-    end
-  end
+end
+
+
 
   def show(conn, %{"id" => id}) do
     clocks = TimeTrackers.get_clock_by_user!(id)

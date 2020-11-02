@@ -15,4 +15,8 @@ defmodule MyAppWeb.ClockView do
       time: clock.time,
       status: clock.status}
   end
+
+    def render("error.json", %{message: message}) do
+    %{error: message}
+  end
 end
