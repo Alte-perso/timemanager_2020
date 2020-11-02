@@ -23,7 +23,7 @@ defmodule MyAppWeb.Router do
     options   "/workingtimes", WorkingtimeController, :options
     options   "/workingtimes/:id", WorkingtimeController, :options
     get "/workingtimes/:id/:idi", WorkingtimeController, :show_one
-    post "/workingtimes/:id", WorkingtimeController,:create_for_user
+    post "/workingtimes/:id", WorkingtimeController, :create_for_user
   end
 
   # Enables LiveDashboard only for development

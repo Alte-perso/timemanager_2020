@@ -11,6 +11,5 @@ defmodule MyApp.Repo.Migrations.CreateClocks do
     end
 
     create index(:clocks, [:user_id])
-
   end
 end

@@ -1,11 +1,12 @@
 defmodule MyApp.Account.Workingtime do
   use Ecto.Schema
   import Ecto.Changeset
+  alias MyApp.Account.User
 
   schema "workingtimes" do
     field :end, :naive_datetime
     field :start, :naive_datetime
-    field :user, :id
+    belongs_to :user, User
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule MyApp.Account.Workingtime do
   @doc false
   def changeset(workingtime, attrs) do
     workingtime
-    |> cast(attrs, [:start, :end, :user])
-    |> validate_required([:start, :end, :user])
+    |> cast(attrs, [:start, :end])
+    |> validate_required([:start, :end])
   end
 end

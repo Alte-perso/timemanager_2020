@@ -26,18 +26,22 @@ defmodule MyApp.Account do
         query = from i in User, where: i.email == ^params["email"], where: i.username == ^params["username"]
         Repo.all(query)
         |> Repo.preload(:clocks) 
+        |> Repo.preload(:workingtimes) 
       else
         Repo.all(query)
         |> Repo.preload(:clocks)
+        |> Repo.preload(:workingtimes) 
       end
     else
       if (params["username"]) do
         query = from i in User, where: i.username == ^params["username"]
         Repo.all(query)
         |> Repo.preload(:clocks)
+        |> Repo.preload(:workingtimes) 
       else
         Repo.all(query)
         |> Repo.preload(:clocks)
+        |> Repo.preload(:workingtimes) 
       end
     end
   end
@@ -59,6 +63,7 @@ defmodule MyApp.Account do
     User
     |> Repo.get!(id)
     |> Repo.preload(:clocks)
+    |> Repo.preload(:workingtimes) 
   end
 
   def get_user_login(username, password) do
@@ -147,21 +152,39 @@ defmodule MyApp.Account do
 
   """
   def list_workingtimes do
-    Repo.all(Workingtime)
+    Workingtime
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   def list_workingtimes(params) do
     if (params["start"]) do
       if (params["end"]) do
-        Repo.all(from i in Workingtime, where: i.start >= ^params["start"], where: i.end <= ^params["end"])
+        Workingtime
+        |> where([w], w.start >= ^params["start"])
+        |> where([w], w.end <= ^params["end"])
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.start >= ^params["start"], where: i.end <= ^params["end"])
       else
-        Repo.all(from i in Workingtime, where: i.start >= ^params["start"])
+        Workingtime
+        |> where([w], w.start >= ^params["start"])
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.start >= ^params["start"])
       end
     else
       if (params["end"]) do
-        Repo.all(from i in Workingtime, where: i.end <= ^params["end"])
+        Workingtime
+        |> where([w], w.end <= ^params["end"])
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.end <= ^params["end"])
       else
-        Repo.all(Workingtime)
+        Workingtime
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(Workingtime)
       end
     end
   end
@@ -179,25 +202,52 @@ defmodule MyApp.Account do
       ** (Ecto.NoResultsError)
 
   """
-  def get_workingtime!(id), do: Repo.get!(Workingtime, id)
+  def get_workingtime!(id) do
+    Workingtime
+    |> Repo.get!(id)
+    |> Repo.preload(:user)
+
+  end
 
   def get_workingtime_by_user!(id) do
-    query = from i in Workingtime, where: i.user == ^id
-    Repo.all(query)
+    Workingtime
+    |> where([w], w.user_id == ^id)
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   def get_workingtime_by_user!(id, params) do
     if (params["start"]) do
       if (params["end"]) do
-        Repo.all(from i in Workingtime, where: i.user == ^id, where: i.start >= ^params["start"], where: i.end <= ^params["end"])
+        Workingtime
+        |> where([w], w.user_id == ^id)
+        |> where([w], w.start >= ^params["start"])
+        |> where([w], w.end <= ^params["end"])
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.user_id == ^id, where: i.start >= ^params["start"], where: i.end <= ^params["end"])
       else
-        Repo.all(from i in Workingtime, where: i.user == ^id, where: i.start >= ^params["start"])
+        Workingtime
+        |> where([w], w.user_id == ^id)
+        |> where([w], w.start >= ^params["start"])
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.user_id == ^id, where: i.start >= ^params["start"])
       end
     else
       if (params["end"]) do
-        Repo.all(from i in Workingtime, where: i.user == ^id, where: i.end <= ^params["end"])
+        Workingtime
+        |> where([w], w.user_id == ^id)
+        |> where([w], w.end <= ^params["end"])
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.user_id == ^id, where: i.end <= ^params["end"])
       else
-        Repo.all(from i in Workingtime, where: i.user == ^id)
+        Workingtime
+        |> where([w], w.user_id == ^id)
+        |> Repo.all()
+        |> Repo.preload(:user)
+        # Repo.all(from i in Workingtime, where: i.user_id == ^id)
       end
     end
   end
@@ -214,16 +264,16 @@ defmodule MyApp.Account do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_workingtime(attrs \\ %{}) do
-    %Workingtime{}
-    |> Workingtime.changeset(attrs)
-    |> Repo.insert()
-  end
+  # def create_workingtime(attrs \\ %{}) do
+  #   %Workingtime{}
+  #   |> Workingtime.changeset(attrs)
+  #   |> Repo.insert()
+  # end
 
-  def create_workingtime_for_user(id, attrs \\ %{}) do
-    new_workingtime = %{start: attrs["start"], end: attrs["end"], user: id}
-    %Workingtime{}
-      |> Workingtime.changeset(new_workingtime)
+  def create_workingtime_for_user(%User{} = user, attrs \\ %{}) do
+    user
+      |> Ecto.build_assoc(:workingtimes)
+      |> Workingtime.changeset(attrs)
       |> Repo.insert()
   end
 
@@ -320,7 +370,7 @@ end
 
   def get_clock_by_user!(id) do
     Clock
-    |> where([c], c.user_id == ^id )
+    |> where([c], c.user_id == ^id)
     |> Repo.all()
     |> Repo.preload(:user)
   end
@@ -345,7 +395,6 @@ end
 
 
   def create_clock_for_user(%User{} = user, attrs \\ %{}) do
-    IO.inspect(user)
     user
     |> Ecto.build_assoc(:clocks)
     |> Clock.changeset(attrs)
