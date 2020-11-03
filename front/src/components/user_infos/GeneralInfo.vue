@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.generalInfo">
     <h1 :class="$style.mainTitle">General informations</h1>
-      <v-row class="d-flex justify-space-around align-center mx-5">
+      <v-row class="d-flex justify-space-around align-center mx-5 mt-5">
         <p class="mb-0">Working time during : </p>
         <v-btn @click="filter = 'week'" :class="filter == 'week' ? $style.activeBtn : ''">Last week</v-btn>
         <v-btn @click="filter = 'month'" :class="filter == 'month' ? $style.activeBtn : ''">Last month</v-btn>
@@ -33,8 +33,9 @@
 }
 
 .workingHours {
+  margin-top: 20px;
   text-align: center;
-  font-size: 5em;
+  font-size: 6em;
 }
 
 .activeBtn {
