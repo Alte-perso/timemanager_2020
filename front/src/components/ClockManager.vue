@@ -178,8 +178,8 @@ export default {
   color: #ffffff;
   color: #daf6ff;
   height: 200px;
-  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);    letter-spacing: 0.05em;
+  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  letter-spacing: 0.05em;
   font-size: 40px;
-
 }
 </style>

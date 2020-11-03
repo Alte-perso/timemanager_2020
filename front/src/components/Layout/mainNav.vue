@@ -34,7 +34,10 @@
       class="overflow-y-auto"
       max-height="100vh"
     >
-      <div style="height: 150vh; margin-top: 130px;" :class="$style.mainContainer">
+      <div
+        style="height: 150vh; margin-top: 130px;"
+        :class="$style.mainContainer"
+      >
         <router-view></router-view>
       </div>
     </v-sheet>
