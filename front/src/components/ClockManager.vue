@@ -3,15 +3,6 @@
     class="d-flex justify-space-around align-center"
     :class="$style.mainContainer"
   >
-    <!-- CURRENT TIME -->
-    <div
-      :class="[$style.cardCurrentHour, $style.clock]"
-      class="d-flex flex-column justify-center align-center"
-    >
-      <p class="mb-0" :class="$style.text">Current time :</p>
-      <p class="mb-0" :class="$style.date">{{ date }}</p>
-      <p class="mb-0" :class="$style.time">{{ time }}</p>
-    </div>
     <div>
       <h1 :class="$style.titleWorkStart">Start working :</h1>
       <v-row class="d-flex justify-space-around">
@@ -25,13 +16,13 @@
           <v-icon left>
             mdi-pause
           </v-icon>
-          Stop
+          Pause
         </v-btn>
         <v-btn tile color="orange lighten-3" @click="reset">
           <v-icon left>
             mdi-stop
           </v-icon>
-          Reset
+          Stop
         </v-btn>
       </v-row>
       <span :class="[$style.chrono]">{{ timeChrono }}</span>
@@ -40,7 +31,7 @@
 </template>
 
 <script>
-var week = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
 export default {
   data() {
     return {
@@ -109,31 +100,7 @@ export default {
       }
       return (zero + num).slice(-digit);
     },
-    //Current time Functions
-    updateTime() {
-      var cd = new Date();
-      this.time =
-        this.zeroPadding(cd.getHours(), 2) +
-        ":" +
-        this.zeroPadding(cd.getMinutes(), 2) +
-        ":" +
-        this.zeroPadding(cd.getSeconds(), 2);
-      this.date =
-        this.zeroPadding(cd.getFullYear(), 4) +
-        "-" +
-        this.zeroPadding(cd.getMonth() + 1, 2) +
-        "-" +
-        this.zeroPadding(cd.getDate(), 2) +
-        " " +
-        week[cd.getDay()];
-    },
-    zeroPadding(num, digit) {
-      var zero = "";
-      for (var i = 0; i < digit; i++) {
-        zero += "0";
-      }
-      return (zero + num).slice(-digit);
-    }
+   
   },
   mounted() {
     this.timeBegan = null;
@@ -141,18 +108,15 @@ export default {
     this.stoppedDuration = 0;
     this.started = null;
     this.running = false;
-    setInterval(this.updateTime, 1000);
+
   }
 };
 </script>
 
 <style lang="scss" module>
 .clock {
-  font-family: "Share Tech Mono", monospace;
-  color: #ffffff;
-  color: #daf6ff;
+  color: black;
   height: 200px;
-  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
   .time {
     letter-spacing: 0.05em;
     font-size: 40px;
@@ -168,17 +132,13 @@ export default {
 }
 
 .titleWorkStart {
-  color: #ffffff;
-  color: #daf6ff;
-  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  color: black;
 }
 
 .chrono {
   font-family: "Share Tech Mono", monospace;
-  color: #ffffff;
-  color: #daf6ff;
+  color: black;
   height: 200px;
-  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);    letter-spacing: 0.05em;
   font-size: 40px;
 
 }

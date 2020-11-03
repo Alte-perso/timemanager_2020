@@ -18,6 +18,8 @@ export default {
 
 <style lang="scss" module>
 .mainContainer {
+  width: 100vw;
   background-color: #073631 !important;
 }
 </style>
+

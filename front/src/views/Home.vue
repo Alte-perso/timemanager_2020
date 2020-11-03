@@ -1,20 +1,23 @@
 <template>
   <div>
-    <ClockManager></ClockManager>
-    <WorkingTimes></WorkingTimes>
-    <WorkingTime></WorkingTime>
+    <v-row>
+      <v-col>
+      <InfoUser></InfoUser>
+      </v-col>
+      <v-col>
+        <GeneralInfosUser></GeneralInfosUser>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
-import ClockManager from "@/components/ClockManager";
-import WorkingTimes from "@/components/WorkingTimes";
-import WorkingTime from "@/components/WorkingTime";
+import InfoUser from "@/components/user_infos/UserInfo";
+import GeneralInfosUser from "@/components/user_infos/GeneralInfo";
 export default {
   components: {
-    ClockManager,
-    WorkingTimes,
-    WorkingTime
+    InfoUser,
+    GeneralInfosUser,
   }
 };
 </script>
