@@ -45,7 +45,8 @@ defmodule MyApp.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:bcrypt_elixir, "~> 2.0"},
       {:cors_plug, "~> 2.0"},
-      {:joken, "~> 2.3"}
+      {:joken, "~> 2.3"},
+      {:pow, "~> 1.0.21"}
     ]
   end
 
