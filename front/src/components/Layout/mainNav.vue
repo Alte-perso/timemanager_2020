@@ -17,7 +17,7 @@
         ></v-img>
       </template>
 
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Dashboard Gotham City</v-toolbar-title>
 
@@ -29,6 +29,57 @@
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn> -->
     </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      left
+      temporary
+    >
+      <v-list
+        nav
+        dense
+      >
+        <v-list-item-group
+          v-model="group"
+          active-class="blue--text text--accent-4"
+        >
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Home</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+           <v-list-item-icon>
+              <v-icon> mdi-clock</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>My working times</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-account-multiple</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>My team</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
+
+
     <v-sheet
       id="scrolling-techniques-2"
       class="overflow-y-auto"
@@ -52,9 +103,16 @@ export default {
   },
   data() {
     return {
+      drawer: false,
+      group: null,
       imgGotham: require("@/assets/gotham.jpg")
     };
-  }
+  },
+  watch: {
+    group () {
+      this.drawer = false
+    },
+  },
 };
 </script>
 
