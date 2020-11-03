@@ -6,39 +6,44 @@
       id="bar"
       :data="barData"
       bar-colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]'
-      xkey='day'
-      ykeys='[ "RegularHours", "SupPayedHours", "SupUnpayedHours" ]' 
+      xkey="day"
+      ykeys='[ "RegularHours", "SupPayedHours", "SupUnpayedHours" ]'
       grid="true"
       grid-text-weight="bold"
-      resize="true">
+      resize="true"
+    >
     </BarChart>
     <!-- Supl hour evolution -->
     <LineChart
       id="line"
       :data="lineData"
       line-colors='[ "#FF6384", "#36A2EB" ]'
-      xkey='day'
-      ykeys='["SupHours"]' 
+      xkey="day"
+      ykeys='["SupHours"]'
       grid="true"
       grid-text-weight="bold"
-      resize="true">      
+      resize="true"
+    >
     </LineChart>
     <h1>Mid term indicator</h1>
     <!-- Average paid hours per total hours -->
-    <template v-if="moy_hsup_htot < 0.3 ">
-      <v-alert
-        type="success"
-      >Taux d'écart moyen heures sup/heures réglementaire: {{ moy_hsup_htot }}</v-alert>
+    <template v-if="moy_hsup_htot < 0.3">
+      <v-alert type="success"
+        >Taux d'écart moyen heures sup/heures réglementaire:
+        {{ moy_hsup_htot }}</v-alert
+      >
     </template>
-    <template v-else-if="moy_hsup_htot > 0.4" >
-      <v-alert
-        type="error"
-      >Taux d'écart moyen heures sup/heures réglementaire: {{ moy_hsup_htot }}</v-alert>
+    <template v-else-if="moy_hsup_htot > 0.4">
+      <v-alert type="error"
+        >Taux d'écart moyen heures sup/heures réglementaire:
+        {{ moy_hsup_htot }}</v-alert
+      >
     </template>
     <template v-else>
-      <v-alert
-        type="warning"
-      >Taux d'écart moyen heures sup/heures réglementaire: {{ moy_hsup_htot }}</v-alert>   
+      <v-alert type="warning"
+        >Taux d'écart moyen heures sup/heures réglementaire:
+        {{ moy_hsup_htot }}</v-alert
+      >
     </template>
     <h1>Long term indicator</h1>
     <!-- Time per project -->
@@ -71,18 +76,38 @@ export default {
         { label: "Regular hours", value: 8 },
         { label: "Sup payed hours", value: 1 },
         { label: "Sup unpayed hours", value: 0 }
-      ],  
+      ],
       barData: [
-        { day: 'monday', RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
-        { day: 'tuesday', RegularHours: 7, SupPayedHours: 0, SupUnpayedHours:0 },
-        { day: 'wendsday', RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:1 },
-        { day: 'thirsday', RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
+        {
+          day: "monday",
+          RegularHours: 8,
+          SupPayedHours: 1,
+          SupUnpayedHours: 0
+        },
+        {
+          day: "tuesday",
+          RegularHours: 7,
+          SupPayedHours: 0,
+          SupUnpayedHours: 0
+        },
+        {
+          day: "wendsday",
+          RegularHours: 8,
+          SupPayedHours: 1,
+          SupUnpayedHours: 1
+        },
+        {
+          day: "thirsday",
+          RegularHours: 8,
+          SupPayedHours: 1,
+          SupUnpayedHours: 0
+        }
       ],
       lineData: [
-        { day: 'monday', SupHours: 0 },
-        { day: 'tuesday', SupHours: 1 },
-        { day: 'wendsday', SupHours: 4 },
-        { day: 'thirsday', SupHours: 2 }, 
+        { day: "monday", SupHours: 0 },
+        { day: "tuesday", SupHours: 1 },
+        { day: "wendsday", SupHours: 4 },
+        { day: "thirsday", SupHours: 2 }
       ]
     };
   }
@@ -91,7 +116,7 @@ export default {
 
 <style lang="scss" module>
 h1 {
-  color:white;
-  font-style:italic;
+  color: white;
+  font-style: italic;
 }
 </style>

@@ -140,6 +140,5 @@ export default {
   color: black;
   height: 200px;
   font-size: 40px;
-
 }
 </style>

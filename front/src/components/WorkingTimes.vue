@@ -6,7 +6,12 @@
         v-if="!(selectedItem.length == 0)"
         class="d-flex justify-end align-center mx-0"
       >
-        <v-btn color="warning" class="mr-5" icon @click="deleteWorkingTimeSelected()">
+        <v-btn
+          color="warning"
+          class="mr-5"
+          icon
+          @click="deleteWorkingTimeSelected()"
+        >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-row>
@@ -64,8 +69,8 @@ export default {
   methods: {
     deleteWorkingTimeSelected() {
       this.selectedItem.forEach(id => {
-        this.deleteWorkingTime(id)
-      })
+        this.deleteWorkingTime(id);
+      });
       bus.$emit("getWorkingTimes");
     },
     updateSelected(id) {
@@ -121,11 +126,14 @@ export default {
       }
     },
     deleteWorkingTime(id) {
-      this.axios.delete(process.env.VUE_APP_URL_API + "workingtimes/" + id).then(() => {
-        console.log("===> Working time id: " + id + "succesful deleted !");
-      }).catch(error => {
-        console.log("Error :", error);
-      })
+      this.axios
+        .delete(process.env.VUE_APP_URL_API + "workingtimes/" + id)
+        .then(() => {
+          console.log("===> Working time id: " + id + "succesful deleted !");
+        })
+        .catch(error => {
+          console.log("Error :", error);
+        });
     },
     getWorkingTimes() {
       this.workingTimes = [];
@@ -197,10 +205,10 @@ export default {
 }
 
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {

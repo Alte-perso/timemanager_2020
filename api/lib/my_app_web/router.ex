@@ -26,6 +26,10 @@ defmodule MyAppWeb.Router do
     post "/workingtimes/:id", WorkingtimeController, :create_for_user
   end
 
+  scope "/auth", MyAppWeb do
+    post "/", TokenController, :login
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
