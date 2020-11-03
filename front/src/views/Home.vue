@@ -8,8 +8,6 @@
         <GeneralInfosUser></GeneralInfosUser>
       </v-col>
     </v-row>
-    <v-row class="mx-3">
-    </v-row>
     <GraphHours></GraphHours>
   </div>
 </template>
