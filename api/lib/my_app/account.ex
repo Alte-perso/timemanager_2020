@@ -342,10 +342,10 @@ end
       [%Clock{}, ...]
 
   """
-   def list_clocks do
-   Clock
-   |> Repo.all()
-   |> Repo.preload(:user)
+  def list_clocks do
+    Clock
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   @doc """
