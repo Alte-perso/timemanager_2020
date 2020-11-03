@@ -21,26 +21,22 @@
 
       <v-toolbar-title class="mr-5">Gotham City</v-toolbar-title>
 
-      <v-toolbar-item @click="goTo('Home')" v-if="this.$vuetify.breakpoint.mdAndUp">
-        <v-btn value="Home" class="d-flex align-center" text>
+      <div v-if="this.$vuetify.breakpoint.mdAndUp" class="d-flex">
+        <v-btn value="Home" class="d-flex align-center" text @click="goTo('Home')">
           <v-icon left>mdi-home</v-icon>
           <span>Home</span>
         </v-btn>
-      </v-toolbar-item>
 
-      <v-toolbar-item @click="goTo('Workingtimes')" v-if="this.$vuetify.breakpoint.mdAndUp">
-        <v-btn value="Workingtimes" class="d-flex align-center" text>
+        <v-btn value="Workingtimes" class="d-flex align-center" text @click="goTo('Workingtimes')" >
           <v-icon left>mdi-clock</v-icon>
           <span>My working times</span>
         </v-btn>
-      </v-toolbar-item>
 
-      <v-toolbar-item @click="goTo('Team')" v-if="this.$vuetify.breakpoint.mdAndUp">
-        <v-btn value="Team" class="d-flex align-center" text>
+        <v-btn value="Team" class="d-flex align-center" text @click="goTo('Team')">
           <v-icon left>mdi-account-multiple</v-icon>
           <span>My team</span>
         </v-btn>
-      </v-toolbar-item>
+      </div>
 
       <v-spacer></v-spacer>
 

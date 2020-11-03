@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <v-col>
-      <InfoUser></InfoUser>
-    </v-col>
+  <div class="mx-5 d-flex justify-center">
+    <Team></Team>
   </div>
 </template>
 
 <script>
-import InfoUser from "@/components/user_infos/UserInfo";
+import Team from "@/components/user_infos/Team";
+
 export default {
   components: {
-    InfoUser,
+    Team
   }
 };
 </script>
