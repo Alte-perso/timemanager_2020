@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <h1>Short term indicator</h1>
-    <GraphBar/>
-    <GraphLine/> 
+    <GraphBar><GraphBar>
+    <GraphLine></GraphLine> 
     <h1>Mid term indicator</h1>
-    <Alert/>
+    <Alert></Alert>
     <h1>Long term indicator</h1>
-    <GraphDonut/>
+    <GraphDonut></GraphDonut>
   </div>
 </template>
 

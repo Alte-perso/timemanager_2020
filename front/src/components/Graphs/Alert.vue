@@ -21,9 +21,6 @@
 
 <script>
 export default {
-  components: {
-    Alert,
-  },
   data() {
     return {
       moy_hsup_htot: 0.5
