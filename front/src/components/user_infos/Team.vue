@@ -28,9 +28,14 @@
           { text: 'Voir', value: 'actions' },
         ],
         teams: [
-          {team_name: "Tech team", nbr_membres: 3, actions: "View" }
+          {id: 1, team_name: "Tech team", nbr_membres: 3, actions: "View" }
         ]
       };
+    },
+    methods: {
+      showTeamDetail(teamId) {
+        this.$router.push({name: 'TeamDetails', params: {id: teamId}})
+      }
     }
   }
 </script>
