@@ -29,3 +29,6 @@ my_app-*.tar
 
 # Env file used by Docker
 .env
+
+# dev.exs containing sensitives informations about DB connection
+dev.exs

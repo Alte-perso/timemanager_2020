@@ -46,7 +46,6 @@ defmodule MyApp.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:cors_plug, "~> 2.0"},
       {:joken, "~> 2.3"},
-      {:pow, "~> 1.0.21"}
     ]
   end
 

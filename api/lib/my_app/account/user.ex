@@ -10,6 +10,7 @@ defmodule MyApp.Account.User do
     field :password_hash, :string
     field :firstname, :string
     field :lastname, :string
+    field :role, :string
     has_many :clocks, Clock
     has_many :workingtimes, Workingtime
 
@@ -19,10 +20,11 @@ defmodule MyApp.Account.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :firstname, :lastname])
+    |> cast(attrs, [:username, :email, :password, :firstname, :lastname, :role])
     |> validate_required([:username, :email, :password])
     |> validate_format(:email, ~r/(\w+)@([\w+)\.([\w.]{2,4})/)
     |> validate_length(:password, min: 8)
+    |> validate_inclusion(:role, ~w(user manager generalmanager admin))
     |> unique_constraint([:email, :username])
     |> put_hashed_password
   end
