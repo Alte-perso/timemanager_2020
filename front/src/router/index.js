@@ -5,11 +5,17 @@ import mainNav from "@/components/Layout/mainNav.vue";
 Vue.use(VueRouter);
 
 const routes = [
-  { path: "/", redirect: { name: "Home" } },
+   { path: "/", redirect: { name: "Login" } },
   {
     path: "/",
     component: mainNav,
     children: [
+      {
+        path: "/",
+        name: "Login",
+        component: () =>
+          import(/* webpackChunkName: "login" */ "../views/Login.vue")
+      },
       {
         path: "/home",
         name: "Home",

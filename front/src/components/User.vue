@@ -170,6 +170,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import {EventBus} from "@/main.js"
 
 export default {
   data() {
@@ -300,10 +301,20 @@ export default {
           setTimeout(() => (this.errorMessage = ""), 2000);
           console.log("ERROR : ", errors.response);
         });
+    },
+    openPopup() {
+      this.dialog = true
     }
+  },
+  created() {
+    EventBus.$on('openlogin', () => {
+      console.log("test");
+      this.openPopup();
+    })
   },
   mounted() {
     this.user = this.userState;
+
   }
 };
 </script>

@@ -12,7 +12,7 @@
       class="elevation-1"
     >
 
-          <template v-slot:item.email="{ item }">
+      <template v-slot:item.email="{ item }">
         <a :href="`mailto:${item.email}`">{{item.email}}</a>
       </template>
 
