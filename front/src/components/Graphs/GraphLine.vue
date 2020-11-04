@@ -5,8 +5,8 @@
       id="line"
       :data="lineData"
       line-colors='[ "#FF6384", "#36A2EB" ]'
-      xkey="day"
-      ykeys='["SupHours"]' 
+      xkey="year"
+      ykeys='["a", "b"]' 
       grid="true"
       grid-text-weight="bold"
       resize="true">      
@@ -26,10 +26,10 @@ export default {
   data() {
     return {
       lineData: [
-        { day: "monday", SupHours: 0 },
-        { day: "tuesday", SupHours: 1 },
-        { day: "wendsday", SupHours: 4 },
-        { day: "thirsday", SupHours: 2 }, 
+        { year: "2013", a: 0, b:2 },
+        { year: "2014", a: 1, b:4 },
+        { year: "2015", a: 4, b:6 },
+        { year: "2016", a: 2, b:4 }, 
       ]
     };
   }
