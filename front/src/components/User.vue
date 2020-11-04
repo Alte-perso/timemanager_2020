@@ -44,7 +44,6 @@
         <v-card-text class="mt-5" v-if="!isConnected">
           <form>
             <v-text-field
-              v-if="signUp"
               label="Username"
               outlined
               autocomplete
@@ -52,6 +51,7 @@
               v-model="user.username"
             ></v-text-field>
             <v-text-field
+              v-if="signUp"
               label="Email"
               outlined
               :rules="emailRules"
@@ -131,7 +131,7 @@
             v-if="!signUp"
             color="primary"
             text
-            @click="(dialog = false), setIsConnected(true)"
+            @click="login()"
           >
             Connect
           </v-btn>
@@ -236,6 +236,39 @@ export default {
         console.log("User steel logged");
       }
     },
+
+
+
+    login() {
+      this.loading = true;
+      console.log(process.env.VUE_APP_URL_API_AUTH);
+      this.axios
+        .post(process.env.VUE_APP_URL_API_AUTH, {
+          auth: {
+            username: this.user.username,
+            password: this.user.password
+          }
+        })
+        .then(data => {
+          this.edit = true;
+          this.loading = false;
+          console.log(data)
+          // this.setUser(this.user);
+          this.setIsConnected(true);
+          this.dialog = false;
+        })
+        .catch(errors => {
+          this.loading = false;
+          this.errorMessage = "Oops !!  an error occured ...";
+          setTimeout(() => (this.errorMessage = ""), 2000);
+          console.log("ERROR : ", errors.response);
+        });
+    },
+
+
+
+
+
     createUser() {
       this.loading = true;
       this.errorMessage = "";
@@ -308,10 +341,9 @@ export default {
   },
   created() {
     EventBus.$on('openlogin', () => {
-      console.log("test");
       this.openPopup();
     })
-  },
+  },  
   mounted() {
     this.user = this.userState;
 

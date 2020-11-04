@@ -26,8 +26,16 @@ defmodule MyAppWeb.Router do
     post "/workingtimes/:id", WorkingtimeController, :create_for_user
   end
 
+  pipeline :auth do
+    # plug CORSPlug, origin: "http://localhost:8080"
+    plug CORSPlug, origin: "*"
+    plug :accepts, ["json"]
+  end
+
   scope "/auth", MyAppWeb do
+    pipe_through :auth
     post "/", TokenController, :login
+    options   "/", TokenController, :options
   end
 
   # Enables LiveDashboard only for development
