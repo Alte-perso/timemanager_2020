@@ -31,7 +31,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -102,13 +102,20 @@ export default {
     },
    
   },
+  computed: {
+    ...mapGetters(["userState"])
+  },
   mounted() {
     this.timeBegan = null;
     this.timeStopped = null;
     this.stoppedDuration = 0;
     this.started = null;
     this.running = false;
-
+    //get all clock from the connected user :
+    this.axios.get(process.env.VUE_APP_URL_API + "clocks/" + this.userState.id)
+    .then( data => {
+      console.log(data);
+    })
   }
 };
 </script>

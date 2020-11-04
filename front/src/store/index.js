@@ -5,7 +5,10 @@ import {
   SET_IS_CONNECTED,
   SET_USERNAME,
   SET_USER_EMAIL,
-  SET_USER_ID
+  SET_USER_ID,
+  SET_USER_ROLE,
+  SET_USER_FIRSTNAME,
+  SET_USER_LASTNAME
 } from "./mutation-types";
 
 Vue.use(Vuex);
@@ -16,7 +19,10 @@ export default new Vuex.Store({
     user: {
       username: "",
       email: "",
-      id: ""
+      id: "",
+      fistname: "",
+      lastname: "",
+      role: ""
     },
     isConnected: false
   },
@@ -33,6 +39,9 @@ export default new Vuex.Store({
     userId: state => {
       return state.user.id;
     },
+    userRole: state=> {
+      return state.user.role;
+    },
     isConnected: state => {
       return state.isConnected;
     }
@@ -47,6 +56,15 @@ export default new Vuex.Store({
     [SET_USER_ID](state, id) {
       state.user.id = id;
     },
+    [SET_USER_ROLE](state, role) {
+      state.user.role = role;
+    },
+    [SET_USER_FIRSTNAME](state, firstname) {
+      state.user.firstname = firstname;
+    },
+    [SET_USER_LASTNAME](state, lastname) {
+      state.user.lastname = lastname;
+    },
     [SET_IS_CONNECTED](state, isConnected) {
       state.isConnected = isConnected;
     }
@@ -56,6 +74,9 @@ export default new Vuex.Store({
       commit("SET_USER_EMAIL", user.email);
       commit("SET_USERNAME", user.username);
       commit("SET_USER_ID", user.id);
+      commit("SET_USER_ROLE", user.role);
+      commit("SET_USER_FIRSTNAME", user.firstname);
+      commit("SET_USER_LASTNAME", user.lastname);
     },
     setIsConnected: ({ commit }, isConnected) => {
       commit("SET_IS_CONNECTED", isConnected);

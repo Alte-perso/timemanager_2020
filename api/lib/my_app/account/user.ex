@@ -25,7 +25,8 @@ defmodule MyApp.Account.User do
     |> validate_format(:email, ~r/(\w+)@([\w+)\.([\w.]{2,4})/)
     |> validate_length(:password, min: 8)
     |> validate_inclusion(:role, ~w(user manager generalmanager admin))
-    |> unique_constraint([:email, :username])
+    |> unique_constraint(:username)
+    |> unique_constraint(:email)
     |> put_hashed_password
   end
 

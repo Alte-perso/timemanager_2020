@@ -5,13 +5,13 @@
         <v-avatar size="120">
           <v-img :src="imgDefaultAvatar"></v-img>
         </v-avatar>
-        <p>Username: </p>
+        <p>{{ userState.username }} </p>
       </v-col>
       <v-col>
         <div>
-          <p>Firstname : </p>
-          <p>Lastname : </p>
-          <p>Role : </p>
+          <p>Firstname : {{ userState.firstname }} </p>
+          <p>Lastname : {{ userState.lastname }}</p>
+          <p>Role : {{ userState.role }}</p>
           <p>Equipes : </p>
         </div>
       </v-col>
@@ -23,6 +23,7 @@
 
 <script>
 import ClockManager from "@/components/ClockManager" 
+import {mapGetters } from "vuex";
   export default {
     components: {
       ClockManager
@@ -31,7 +32,10 @@ import ClockManager from "@/components/ClockManager"
       return {
         imgDefaultAvatar: require("@/assets/default-avatar.png")
       }
-    }
+    },
+    computed: {
+    ...mapGetters(["userState"])
+    },
   }
 </script>
 
