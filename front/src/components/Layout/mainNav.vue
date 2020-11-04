@@ -32,9 +32,9 @@
           <span>My working times</span>
         </v-btn>
 
-        <v-btn value="Team" class="d-flex align-center" text @click="goTo('Team')">
+        <v-btn value="Team" class="d-flex align-center" text @click="goTo('Teams')">
           <v-icon left>mdi-account-multiple</v-icon>
-          <span>My team</span>
+          <span>My teams</span>
         </v-btn>
       </div>
 
@@ -81,13 +81,13 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="goTo('Team')">
+          <v-list-item @click="goTo('Teams')">
             <v-list-item-icon>
               <v-icon>mdi-account-multiple</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>My team</v-list-item-title>
+              <v-list-item-title>My teams</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
