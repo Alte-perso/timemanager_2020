@@ -26,10 +26,13 @@ export default {
   data() {
     return {
       barData: [
-        { day: "monday", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
-        { day: "tuesday", RegularHours: 7, SupPayedHours: 0, SupUnpayedHours:0 },
-        { day: "wendsday", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:1 },
-        { day: "thirsday", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
+        { day: "Mond", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
+        { day: "Tues", RegularHours: 7, SupPayedHours: 0, SupUnpayedHours:0 },
+        { day: "Wed", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:1 },
+        { day: "Thu", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
+        { day: "Fri", RegularHours: 7, SupPayedHours: 0, SupUnpayedHours:0 },
+        { day: "Sat", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:1 },
+        { day: "Sun", RegularHours: 8, SupPayedHours: 1, SupUnpayedHours:0 },
       ]
     };
   }
