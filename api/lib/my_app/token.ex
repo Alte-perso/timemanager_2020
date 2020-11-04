@@ -8,7 +8,7 @@ defmodule MyApp.Token do
 
     def call(conn, _opts) do
         tkn = jwt_from_header(conn)
-        case Token.verify_and_validate(tkn) do
+        case verify_and_validate(tkn) do
             {:error, _error} -> forbidden(conn)
             {:ok, claims} -> success(conn, claims, tkn)
         end
