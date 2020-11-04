@@ -9,7 +9,7 @@ defmodule MyAppWeb.TokenController do
         if (is_nil(user)) do
             render(conn, "token.json", %{status: false, token: "", user: nil})
         else
-            token = Token.generate_and_sign!( %{"user" => user.id})
+            token = Token.generate_and_sign!(%{"user" => user.id})
             render(conn, "token.json", %{status: true, token: token, user: user.id})
         end
     end

@@ -85,11 +85,8 @@ defmodule MyApp.Account do
 
   """
   def create_user(attrs \\ %{}) do
-    # hashedpass = is_nil(attrs["password"]) && attrs.password || attrs["password"]
-    # password = Base.encode16(:crypto.hash(:sha256, "#{hashedpass}_s3cr3tp4s$xXxX_______try_to_crack_this_lol"))
     %User{}
     |> User.changeset(attrs)
-    # |> User.changeset(%{password: password})
     |> Repo.insert()
   end
 
@@ -165,13 +162,11 @@ defmodule MyApp.Account do
         |> where([w], w.end <= ^params["end"])
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.start >= ^params["start"], where: i.end <= ^params["end"])
       else
         Workingtime
         |> where([w], w.start >= ^params["start"])
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.start >= ^params["start"])
       end
     else
       if (params["end"]) do
@@ -179,12 +174,10 @@ defmodule MyApp.Account do
         |> where([w], w.end <= ^params["end"])
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.end <= ^params["end"])
       else
         Workingtime
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(Workingtime)
       end
     end
   end
@@ -225,14 +218,12 @@ defmodule MyApp.Account do
         |> where([w], w.end <= ^params["end"])
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.user_id == ^id, where: i.start >= ^params["start"], where: i.end <= ^params["end"])
       else
         Workingtime
         |> where([w], w.user_id == ^id)
         |> where([w], w.start >= ^params["start"])
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.user_id == ^id, where: i.start >= ^params["start"])
       end
     else
       if (params["end"]) do
@@ -241,13 +232,11 @@ defmodule MyApp.Account do
         |> where([w], w.end <= ^params["end"])
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.user_id == ^id, where: i.end <= ^params["end"])
       else
         Workingtime
         |> where([w], w.user_id == ^id)
         |> Repo.all()
         |> Repo.preload(:user)
-        # Repo.all(from i in Workingtime, where: i.user_id == ^id)
       end
     end
   end

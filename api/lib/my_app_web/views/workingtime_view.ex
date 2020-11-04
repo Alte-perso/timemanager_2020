@@ -19,11 +19,11 @@ defmodule MyAppWeb.WorkingtimeView do
       creation_date: NaiveDateTime.to_string(workingtime.inserted_at)}
   end
 
-    def render("workingtimeWithUser.json", %{workingtime: workingtime, user: user}) do
-    %{id: workingtime.id,
-      start: workingtime.start,
-      end: workingtime.end,
-      creation_date: NaiveDateTime.to_string(workingtime.inserted_at),
-      user: render_one(user, UserView, "user.json"),}
+  def render("workingtimeWithUser.json", %{workingtime: workingtime, user: user}) do
+  %{id: workingtime.id,
+    start: workingtime.start,
+    end: workingtime.end,
+    creation_date: NaiveDateTime.to_string(workingtime.inserted_at),
+    user: render_one(user, UserView, "user.json")}
   end
 end

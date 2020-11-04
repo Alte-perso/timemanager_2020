@@ -16,7 +16,7 @@ defmodule MyAppWeb.UserView do
       email: user.email,
       firstname: user.firstname,
       lastname: user.lastname,
-      registred_at: NaiveDateTime.to_string(user.inserted_at)
-      }
+      registred_at: NaiveDateTime.to_string(user.inserted_at),
+      role: user.role}
   end
 end

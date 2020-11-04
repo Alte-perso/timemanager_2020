@@ -2,7 +2,6 @@ defmodule MyAppWeb.Router do
   use MyAppWeb, :router
 
   pipeline :api do
-    # plug CORSPlug, origin: "http://localhost:8080"
     plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
   end
@@ -17,24 +16,23 @@ defmodule MyAppWeb.Router do
     resources "/clocks", ClockController, except: [:new, :edit]
     options   "/clocks", ClockController, :options
     options   "/clocks/:id", ClockController, :options
-    post "/clocks/:id", ClockController, :create_for_user
+    post      "/clocks/:id", ClockController, :create_for_user
 
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
     options   "/workingtimes", WorkingtimeController, :options
     options   "/workingtimes/:id", WorkingtimeController, :options
-    get "/workingtimes/:id/:idi", WorkingtimeController, :show_one
-    post "/workingtimes/:id", WorkingtimeController, :create_for_user
+    get       "/workingtimes/:id/:idi", WorkingtimeController, :show_one
+    post      "/workingtimes/:id", WorkingtimeController, :create_for_user
   end
 
   pipeline :auth do
-    # plug CORSPlug, origin: "http://localhost:8080"
     plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
   end
 
   scope "/auth", MyAppWeb do
     pipe_through :auth
-    post "/", TokenController, :login
+    post      "/", TokenController, :login
     options   "/", TokenController, :options
   end
 

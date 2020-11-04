@@ -16,8 +16,7 @@ defmodule MyAppWeb.ClockView do
       time: clock.time,
       status: clock.status,
       user: render_one(clock.user, UserView, "user.json"),
-      creation_date: NaiveDateTime.to_string(clock.inserted_at)
-      }
+      creation_date: NaiveDateTime.to_string(clock.inserted_at)}
   end
 
     def render("clockWithUser.json", %{clock: clock, user: user}) do
@@ -25,7 +24,6 @@ defmodule MyAppWeb.ClockView do
       time: clock.time,
       status: clock.status,
       user: render_one(user, UserView, "user.json"),
-      creation_date: NaiveDateTime.to_string(clock.inserted_at)
-      }
+      creation_date: NaiveDateTime.to_string(clock.inserted_at)}
   end
 end
