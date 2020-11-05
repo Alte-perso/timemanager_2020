@@ -255,12 +255,6 @@ defmodule MyApp.Account do
       {:error, %Ecto.Changeset{}}
 
   """
-  # def create_workingtime(attrs \\ %{}) do
-  #   %Workingtime{}
-  #   |> Workingtime.changeset(attrs)
-  #   |> Repo.insert()
-  # end
-
   def create_workingtime_for_user(%User{} = user, attrs \\ %{}) do
     user
       |> Ecto.build_assoc(:workingtimes)
@@ -398,36 +392,27 @@ def list_clocks do
     |> Repo.insert()
   end
 
-<<<<<<< HEAD
-  def check_endclock_create_workingtime(clock) do
-=======
-  # def create_clock_for_user(id, attrs \\ %{}) do
-  #   cursor = %{time: attrs["time"], status: attrs["status"], user: id}
-  #   %Clock{}
-  #     |> Clock.changeset(cursor)
-  #     |> Repo.insert()
-  # end
-
   def check_endclock_create_workingtime(%User{} = user, clock) do
->>>>>>> 7ba8729babe5ae7a455b03813ea82ba2ae8c7945
     if (clock.status == true) do
       user_id = clock.user_id
-
       query = from i in Clock, where: i.user_id == ^user_id, where: i.status == true, order_by: i.time
+      # we list all clocks with status == true:
       last_clocks = Repo.all(query)
-
+      # we get first clock created at start:
       last_clock = List.first(last_clocks)
-      
+      # get time value from first clock (when clock is started)
       startClock = last_clock.time
-      
+      # get time value from current clock (when clock is stopped)
       endClock = clock.time
 
+      # if clock started != clock stopped:
       if (clock != last_clock) do
+        # set last_clock status to false (kind of 'archiving' the data)
         new_params = %{time: last_clock.time, status: false, user: last_clock.user}
         last_clock
         |> Clock.changeset(new_params)
         |> Repo.update()
-        
+        # same operation for clock
         new_params = %{time: clock.time, status: false}
         clock
         |> Clock.changeset(new_params)

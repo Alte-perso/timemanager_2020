@@ -11,15 +11,6 @@ defmodule MyAppWeb.ClockController do
     render(conn, "index.json", clocks: clocks)
   end
 
-  # def create(conn, %{"clock" => clock_params}) do
-  #   with {:ok, %Clock{} = clock} <- Account.create_clock(clock_params) do
-  #     conn
-  #     |> put_status(:created)
-  #     |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-  #     |> render("show.json", clock: clock)
-  #   end
-  # end
-
   def create_for_user(conn, %{"id" => id, "clock" => clock_params}) do
     user = Account.get_user!(id)
     IO.inspect(user)
