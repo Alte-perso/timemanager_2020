@@ -266,9 +266,10 @@ defmodule MyApp.Account do
       |> Repo.insert()
   end
 
-  def create_auto_workingtime(userId, clockStart, clockEnd) do
-    new_workingtime = %{start: clockStart, end: clockEnd, user: userId}
-    %Workingtime{}
+  def create_auto_workingtime(%User{} = user, clockStart, clockEnd) do
+    new_workingtime = %{start: clockStart, end: clockEnd}
+    user
+    |> Ecto.build_assoc(:workingtimes)
     |> Workingtime.changeset(new_workingtime)
     |> Repo.insert()
 end
@@ -364,6 +365,15 @@ end
     |> Repo.preload(:user)
   end
 
+  def get_latest_clock_by_user!(id) do
+    Clock
+    |> where([c], c.user_id == ^id)
+    |> order_by([c], [desc: c.time])
+    |> Repo.all()
+    |> List.first()
+    |> Repo.preload(:user)
+  end
+
   @doc """
   Creates a clock.
 
@@ -397,24 +407,31 @@ end
   #     |> Repo.insert()
   # end
 
-  def check_endclock_create_workingtime(clock) do
+  def check_endclock_create_workingtime(%User{} = user, clock) do
     if (clock.status == true) do
-      user = clock.user
-      query = from i in Clock, where: i.user == ^user, where: i.status == true, order_by: i.time
+      user_id = clock.user_id
+
+      query = from i in Clock, where: i.user_id == ^user_id, where: i.status == true, order_by: i.time
       last_clocks = Repo.all(query)
+
       last_clock = List.first(last_clocks)
+      
       startClock = last_clock.time
+      
       endClock = clock.time
+
       if (clock != last_clock) do
         new_params = %{time: last_clock.time, status: false, user: last_clock.user}
         last_clock
         |> Clock.changeset(new_params)
         |> Repo.update()
-        new_params = %{time: clock.time, status: false, user: clock.user}
+        
+        new_params = %{time: clock.time, status: false}
         clock
         |> Clock.changeset(new_params)
         |> Repo.update()
-        create_auto_workingtime(clock.user, startClock, endClock)
+
+        create_auto_workingtime(user, startClock, endClock)
       end
     end
 end
