@@ -19,7 +19,7 @@ defmodule MyAppWeb.ClockView do
       creation_date: NaiveDateTime.to_string(clock.inserted_at)}
   end
 
-    def render("clockWithUser.json", %{clock: clock, user: user}) do
+  def render("clockWithUser.json", %{clock: clock, user: user}) do
     %{id: clock.id,
       time: clock.time,
       status: clock.status,
