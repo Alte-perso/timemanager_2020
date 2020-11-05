@@ -17,6 +17,8 @@ defmodule MyAppWeb.Router do
     options   "/clocks", ClockController, :options
     options   "/clocks/:id", ClockController, :options
     post      "/clocks/:id", ClockController, :create_for_user
+    options   "/clocks/:id/last", ClockController, :options
+    get   "/clocks/:id/last", ClockController, :show_last_clock
 
     resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
     options   "/workingtimes", WorkingtimeController, :options

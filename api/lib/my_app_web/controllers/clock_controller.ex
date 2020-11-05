@@ -20,7 +20,6 @@ defmodule MyAppWeb.ClockController do
   #   end
   # end
 
-
   def create_for_user(conn, %{"id" => id, "clock" => clock_params}) do
     user = Account.get_user!(id)
     IO.inspect(user)
@@ -31,7 +30,7 @@ defmodule MyAppWeb.ClockController do
       |> render(:"404")
     else
       with {:ok, %Clock{} = clock} <- Account.create_clock_for_user(user, clock_params) do
-            Account.check_endclock_create_workingtime(clock)
+            Account.check_endclock_create_workingtime(user, clock)
             conn
             |> put_status(:created)
             |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
@@ -43,6 +42,11 @@ defmodule MyAppWeb.ClockController do
   def show(conn, %{"id" => id}) do
     clocks = Account.get_clock_by_user!(id)
     render(conn, "index.json", clocks: clocks)
+  end
+
+  def show_last_clock(conn, %{"id" => id}) do
+    last_clock = Account.get_latest_clock_by_user!(id)
+    render(conn, "show.json", clock: last_clock)
   end
 
   def update(conn, %{"id" => id, "clock" => clock_params}) do

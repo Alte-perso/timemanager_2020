@@ -88,6 +88,20 @@
             <h2 class="mb-5">Edit user :</h2>
             <form>
               <v-text-field
+                label="Firstname"
+                outlined
+                autocomplete
+                :rules="userRules"
+                v-model="user.firstname"
+              ></v-text-field>
+              <v-text-field
+                label="Lastname"
+                outlined
+                autocomplete
+                :rules="userRules"
+                v-model="user.lastname"
+              ></v-text-field>
+              <v-text-field
                 label="Username"
                 outlined
                 autocomplete
@@ -113,6 +127,8 @@
           </div>
 
           <div v-else>
+            <p>Firstname : {{ userState.firstname }}</p>
+            <p>Lastname : {{ userState.lastname }}</p>
             <p>Username : {{ userState.username }}</p>
             <p>Email : {{ userState.email }}</p>
           </div>
@@ -186,6 +202,9 @@ export default {
         password: null,
         id: null
       },
+      userRules: [
+        v => (v && v.length <= 15) || "Must be less than 15 characters"
+      ],
       usernameRules: [
         v => !!v || "Username is required",
         v => (v && v.length <= 15) || "Username must be less than 15 characters"
@@ -224,6 +243,8 @@ export default {
       this.user.id = null;
       this.user.email = null;
       this.user.password = null;
+      this.user.firstname = null;
+      this.user.lastname = null;
     },
     logout() {
       if (confirm("Are you sure you want to log out ?")) {
@@ -231,17 +252,31 @@ export default {
         this.initUser();
         this.setUser(this.user);
         this.setIsConnected(false);
+        this.$router.push({ name: 'Login'});
         console.log("User unlogged");
       } else {
         console.log("User steel logged");
       }
     },
-
-
-
+    getUser(userId) {
+      this.axios.get(process.env.VUE_APP_URL_API + "users/" + userId)
+      .then( data => {
+        console.log(data);
+        this.user.username = data.data.data.username;
+        this.user.email = data.data.data.email;
+        this.user.id = data.data.data.id;
+        this.user.firstname = data.data.data.firstname;
+        this.user.lastname = data.data.data.lastname;
+        this.setUser(this.user);
+      })
+      .catch(errors => {
+          this.errorMessage = "Oops !!  an error occured ...";
+          setTimeout(() => (this.errorMessage = ""), 2000);
+          console.log("ERROR : ", errors.response);
+      })
+    },
     login() {
       this.loading = true;
-      console.log(process.env.VUE_APP_URL_API_AUTH);
       this.axios
         .post(process.env.VUE_APP_URL_API_AUTH, {
           auth: {
@@ -250,12 +285,21 @@ export default {
           }
         })
         .then(data => {
-          this.edit = true;
-          this.loading = false;
-          console.log(data)
-          // this.setUser(this.user);
-          this.setIsConnected(true);
-          this.dialog = false;
+          if(data.data.status) {
+            this.edit = true;
+            this.loading = false;
+            localStorage.setItem('JWT_TOKEN', data.data.token);
+            if(this.userState.email == null) {
+               this.getUser(data.data.user);
+            }
+            this.setIsConnected(true);
+            this.dialog = false;
+            this.$router.push({ name: 'Home'});
+          } else {
+            this.loading = false;
+            this.errorMessage = "Oops... Password or Username incorrect";
+            setTimeout(() => (this.errorMessage = ""), 2000);
+          }
         })
         .catch(errors => {
           this.loading = false;
@@ -264,11 +308,6 @@ export default {
           console.log("ERROR : ", errors.response);
         });
     },
-
-
-
-
-
     createUser() {
       this.loading = true;
       this.errorMessage = "";
@@ -280,14 +319,14 @@ export default {
             email: this.user.email
           }
         })
-        .then(response => {
+        .then(data => {
           this.loading = false;
-          this.user.username = response.data.data.username;
-          this.user.id = response.data.data.id;
-          this.user.email = response.data.data.email;
+          console.log(data);
+          this.user.username = data.data.data.username;
+          this.user.email = data.data.data.email;
+          this.user.id = data.data.data.id;
           this.setUser(this.user);
-          this.setIsConnected(true);
-          this.dialog = false;
+          this.login();
         })
         .catch(errors => {
           this.loading = false;
@@ -305,6 +344,7 @@ export default {
           this.setUser(this.user);
           this.setIsConnected(false);
           this.dialog = false;
+          this.$router.push({name: "Login"});
         })
         .catch(errors => {
           this.loading = false;
