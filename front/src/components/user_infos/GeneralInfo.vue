@@ -2,9 +2,11 @@
   <div :class="$style.generalInfo">
     <h1 :class="$style.mainTitle">General informations</h1>
       <v-row class="d-flex justify-space-around align-center mx-5 mt-5">
-        <p class="mb-0">Working time during : </p>
-        <v-btn @click="filter = 'week'" :class="filter == 'week' ? $style.activeBtn : ''">Last week</v-btn>
-        <v-btn @click="filter = 'month'" :class="filter == 'month' ? $style.activeBtn : ''">Last month</v-btn>
+        <p class="mb-0" :class="$style.subTitle">Working time during : </p>
+      </v-row>
+      <v-row class="d-flex justify-center align-center mx-5">
+        <v-btn @click="filter = 'week'" :class="filter == 'week' ? $style.activeBtn : ''" class="mx-1">Last week</v-btn>
+        <v-btn @click="filter = 'month'" :class="filter == 'month' ? $style.activeBtn : ''" class="mx-1">Last month</v-btn>
       </v-row>
       <h1 :class="$style.workingHours">25 h</h1>
   </div>
@@ -29,6 +31,10 @@
 }
 
 .mainTitle {
+  text-align: center;
+}
+
+.subTitle {
   text-align: center;
 }
 

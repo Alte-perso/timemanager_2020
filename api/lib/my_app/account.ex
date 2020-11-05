@@ -368,7 +368,7 @@ end
   def get_latest_clock_by_user!(id) do
     Clock
     |> where([c], c.user_id == ^id)
-    |> order_by([c], [desc: c.time])
+    |> order_by([c], [desc: c.inserted_at])
     |> Repo.all()
     |> List.first()
     |> Repo.preload(:user)
