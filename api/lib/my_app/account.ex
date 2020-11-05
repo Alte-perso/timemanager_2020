@@ -6,7 +6,7 @@ defmodule MyApp.Account do
   import Ecto.Query, warn: false
   alias MyApp.Repo
 
-  alias MyApp.Account.{User, Clock, Workingtime}
+  alias MyApp.Account.{User, Clock, Workingtime, Team}
 
   @doc """
   Returns the list of users.
@@ -17,6 +17,7 @@ defmodule MyApp.Account do
       [%User{}, ...]
 
   """
+# -------------------------- User ---------------------------
   def list_users(params) do
     IO.inspect(params)
     query = from i in User
@@ -148,6 +149,7 @@ defmodule MyApp.Account do
       [%Workingtime{}, ...]
 
   """
+# ------------------------- Workingtime -----------------------
   def list_workingtimes do
     Workingtime
     |> Repo.all()
@@ -331,7 +333,9 @@ end
       [%Clock{}, ...]
 
   """
-  def list_clocks do
+# -------------------------- Clock ---------------------------
+
+def list_clocks do
     Clock
     |> Repo.all()
     |> Repo.preload(:user)
@@ -376,12 +380,6 @@ end
       {:error, %Ecto.Changeset{}}
 
   """
-  # def create_clock(attrs \\ %{}) do
-  #   %Clock{}
-  #   |> Clock.changeset(attrs)
-  #   |> Repo.insert()
-  # end
-
 
   def create_clock_for_user(%User{} = user, attrs \\ %{}) do
     user
@@ -389,13 +387,6 @@ end
     |> Clock.changeset(attrs)
     |> Repo.insert()
   end
-
-  # def create_clock_for_user(id, attrs \\ %{}) do
-  #   cursor = %{time: attrs["time"], status: attrs["status"], user: id}
-  #   %Clock{}
-  #     |> Clock.changeset(cursor)
-  #     |> Repo.insert()
-  # end
 
   def check_endclock_create_workingtime(clock) do
     if (clock.status == true) do
@@ -464,5 +455,121 @@ end
   """
   def change_clock(%Clock{} = clock) do
     Clock.changeset(clock, %{})
+  end
+
+  @doc """
+  Returns the list of teams.
+
+  ## Examples
+
+      iex> list_teams()
+      [%Team{}, ...]
+
+  """
+# -------------------------- TEAM -----------------------------
+
+  def list_teams do
+    Team
+    |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
+  @doc """
+  Gets a single team.
+
+  Raises `Ecto.NoResultsError` if the Team does not exist.
+
+  ## Examples
+
+      iex> get_team!(123)
+      %Team{}
+
+      iex> get_team!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_team!(id) do
+    Team
+    |> Repo.get!(id)
+    |> Repo.preload(:user)
+  end
+
+  def get_team_by_user!(id) do
+    Team
+    |> where([t], t.user_id == ^id)
+    |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
+  @doc """
+  Creates a team.
+
+  ## Examples
+
+      iex> create_team(%{field: value})
+      {:ok, %Team{}}
+
+      iex> create_team(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_team(attrs \\ %{}) do
+    %Team{}
+    |> Team.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_team_for_user(%User{} = user, attrs \\ %{}) do
+    user
+    |> Ecto.build_assoc(:teams)
+    |> Team.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a team.
+
+  ## Examples
+
+      iex> update_team(team, %{field: new_value})
+      {:ok, %Team{}}
+
+      iex> update_team(team, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_team(%Team{} = team, attrs) do
+    team
+    |> Team.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a team.
+
+  ## Examples
+
+      iex> delete_team(team)
+      {:ok, %Team{}}
+
+      iex> delete_team(team)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_team(%Team{} = team) do
+    Repo.delete(team)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking team changes.
+
+  ## Examples
+
+      iex> change_team(team)
+      %Ecto.Changeset{data: %Team{}}
+
+  """
+  def change_team(%Team{} = team, attrs \\ %{}) do
+    Team.changeset(team, attrs)
   end
 end

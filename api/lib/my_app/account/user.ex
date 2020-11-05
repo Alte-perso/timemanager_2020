@@ -1,7 +1,7 @@
 defmodule MyApp.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias MyApp.Account.{Clock, Workingtime}
+  alias MyApp.Account.{Clock, Workingtime, Team}
 
   schema "users" do
     field :username, :string
@@ -13,6 +13,7 @@ defmodule MyApp.Account.User do
     field :role, :string
     has_many :clocks, Clock
     has_many :workingtimes, Workingtime
+    has_many :teams, Team
 
     timestamps()
   end

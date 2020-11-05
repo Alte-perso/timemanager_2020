@@ -23,6 +23,11 @@ defmodule MyAppWeb.Router do
     options   "/workingtimes/:id", WorkingtimeController, :options
     get       "/workingtimes/:id/:idi", WorkingtimeController, :show_one
     post      "/workingtimes/:id", WorkingtimeController, :create_for_user
+
+    resources "/teams", TeamController, except: [:new, :edit]
+    options   "/teams", TeamController, :options
+    options   "/teams/:id", TeamController, :options
+    post      "/teams/:id", TeamController, :create_for_user
   end
 
   pipeline :auth do
@@ -32,8 +37,9 @@ defmodule MyAppWeb.Router do
 
   scope "/auth", MyAppWeb do
     pipe_through :auth
-    post      "/", TokenController, :login
+
     options   "/", TokenController, :options
+    post      "/", TokenController, :login
   end
 
   # Enables LiveDashboard only for development
