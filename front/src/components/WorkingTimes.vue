@@ -35,10 +35,28 @@
           </v-avatar>
         </div>
       </template>
+
+      <template v-slot:item.start="{ item }">
+        {{ item.start.split("T")[0] + " at " + item.start.split("T")[1] }}
+      </template>
+
+      <template v-slot:item.end="{ item }">
+        {{ item.end.split("T")[0] + " at " + item.end.split("T")[1] }}
+      </template>
+
       <template v-slot:item.duration="{ item }">
         <v-chip :color="getColor(item.duration)" dark>
           {{ item.duration }}
         </v-chip>
+      </template>
+
+      <template v-slot:item.edit="{ item }">
+        <v-btn  
+          @click="goToEdit(item.id)"
+          icon
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
       </template>
     </v-data-table>
   </div>
@@ -46,11 +64,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { bus } from "@/main";
+import { EventBus } from "@/main";
 
 export default {
   data() {
     return {
+      dialog: false,
       selectedItem: [],
       headers: [
         { text: "", value: "delete", sortable: false },
@@ -61,17 +80,21 @@ export default {
         },
         { text: "End date", value: "end" },
         { text: "Duration", value: "duration" },
-        { text: "Extra hours", value: "extraHours" }
+        { text: "Extra hours", value: "extraHours" },
+        { text: "", value: "edit" }
       ],
       workingTimes: []
     };
   },
   methods: {
+    goToEdit(id){
+      this.$router.push({name: "WorkingtimeEdit", params: {"id": id}})
+    },
     deleteWorkingTimeSelected() {
       this.selectedItem.forEach(id => {
         this.deleteWorkingTime(id);
       });
-      bus.$emit("getWorkingTimes");
+      EventBus.$emit("getWorkingTimes");
     },
     updateSelected(id) {
       if (this.selectedItem.indexOf(id) == -1) {
@@ -171,7 +194,7 @@ export default {
     ...mapGetters(["userState"])
   },
   created() {
-    bus.$on("getWorkingTimes", () => {
+    EventBus.$on("getWorkingTimes", () => {
       this.getWorkingTimes();
     });
   },

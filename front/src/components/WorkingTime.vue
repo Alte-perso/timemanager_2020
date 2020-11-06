@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-5 mt-5 px-5">
+  <v-card class="mx-5 mt-5 px-5" elevation="0" >
     <!-- ###### SELECT DATE ###### -->
     <v-row>
       <!-- ###### START DATE ###### -->
@@ -122,8 +122,11 @@
     <v-card-actions class="justify-space-between">
       <span :class="$style.errorMsg">{{ errorMessage }}</span>
       <span :class="$style.successMsg">{{ successMessage }}</span>
-      <v-btn color="primary" @click="createWorkingTime()" :loading="loading"
+      <v-btn color="primary" @click="createWorkingTime()" :loading="loading" v-if="edit == false"
         >Save</v-btn
+      >
+      <v-btn color="primary" @click="updateWorkingTime()" :loading="loading" v-else
+        >Edit</v-btn
       >
     </v-card-actions>
   </v-card>
@@ -131,9 +134,19 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { bus } from "@/main";
+import { EventBus } from "@/main";
 
 export default {
+  props: {
+    edit: {
+      type: Boolean,
+      default: false
+    },
+    working_id: {
+      type: Number,
+      default: null
+    }
+  },
   data() {
     return {
       loading: false,
@@ -153,25 +166,73 @@ export default {
   computed: {
     ...mapGetters(["userState"])
   },
+  mounted() {
+    if (this.edit) {
+          this.axios.get(process.env.VUE_APP_URL_API + "workingtime/" + this.working_id)
+      .then(data => {
+        console.log(data);
+        this.startDate = data.data.data.start.split("T")[0];
+        this.endDate = data.data.data.end.split("T")[0];
+        this.startHour = data.data.data.start.split("T")[1].slice(0, 5);
+        this.endHour = data.data.data.end.split("T")[1].slice(0, 5);
+      })
+      .catch(errors => {
+        console.log(errors);
+      })
+    }
+  },
   methods: {
     initMessages() {
       this.errorMessage = "";
       this.successMessage = "";
     },
+    updateWorkingTime() {
+      this.initMessages();
+      this.loading = true;
+      this.axios.put(process.env.VUE_APP_URL_API + "workingtimes/" + this.working_id, {
+        workingtime: {
+          start: this.startDate + " " + this.startHour + ":00",
+          end: this.endDate + " " + this.endHour + ":00"
+        }
+      })
+      .then(result => {
+        this.loading = false;
+        EventBus.$emit("getWorkingTimes");
+        this.successMessage = "Your working time has been updated";
+        setTimeout(
+          function() {
+            this.initMessages();
+            this.$router.push({name: "Workingtimes"});
+          }.bind(this),
+          2000
+        );
+        console.log(result);
+      })
+      .catch(error => {
+        this.loading = false;
+        this.errorMessage = "Oops, an error occured... ";
+        setTimeout(
+          function() {
+            this.initMessages();
+          }.bind(this),
+          4000
+        );
+        console.log(error);
+      });
+    },
     createWorkingTime() {
       this.initMessages();
       this.loading = true;
       this.axios
-        .post(process.env.VUE_APP_URL_API + "workingtimes", {
+        .post(process.env.VUE_APP_URL_API + "workingtimes/" + this.userState.id , {
           workingtime: {
             start: this.startDate + " " + this.startHour + ":00",
-            end: this.endDate + " " + this.endHour + ":00",
-            user: this.userState.id
+            end: this.endDate + " " + this.endHour + ":00"
           }
         })
         .then(result => {
           this.loading = false;
-          bus.$emit("getWorkingTimes");
+          EventBus.$emit("getWorkingTimes");
           this.successMessage = "Your working time has been registered";
           setTimeout(
             function() {
@@ -190,7 +251,6 @@ export default {
             }.bind(this),
             4000
           );
-
           console.log(error);
         });
     }

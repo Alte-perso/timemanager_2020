@@ -201,7 +201,6 @@ defmodule MyApp.Account do
     Workingtime
     |> Repo.get!(id)
     |> Repo.preload(:user)
-
   end
 
   def get_workingtime_by_user!(id) do
@@ -209,6 +208,13 @@ defmodule MyApp.Account do
     |> where([w], w.user_id == ^id)
     |> Repo.all()
     |> Repo.preload(:user)
+  end
+
+  def get_working_by_id!(id) do
+    Workingtime
+    |> where([w], w.id == ^id)
+    |> Repo.all()
+    |> List.first()
   end
 
   def get_workingtime_by_user!(id, params) do

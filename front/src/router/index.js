@@ -29,6 +29,12 @@ const routes = [
           import(/* webpackChunkName: "workingtimes" */ "../views/Workingtimes.vue")
       },
       {
+        path: "/working-times/edit/:id",
+        name: "WorkingtimeEdit",
+        component: () =>
+          import(/* webpackChunkName: "workingtimeEdit" */ "../views/WorkingtimeEdit.vue")
+      },
+      {
         path: "/teams",
         name: "Teams",
         component: () =>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div> 
     <v-btn @click="backToTeams">
       <v-icon left>mdi-arrow-left</v-icon>
       Back

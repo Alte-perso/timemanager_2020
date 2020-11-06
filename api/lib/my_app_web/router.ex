@@ -25,6 +25,9 @@ defmodule MyAppWeb.Router do
     options   "/workingtimes/:id", WorkingtimeController, :options
     get       "/workingtimes/:id/:idi", WorkingtimeController, :show_one
     post      "/workingtimes/:id", WorkingtimeController, :create_for_user
+    get       "/workingtime/:id", WorkingtimeController, :show_one_by_working_id
+     options   "/workingtime/:id", WorkingtimeController, :options
+  
 
     resources "/teams", TeamController, except: [:new, :edit]
     options   "/teams", TeamController, :options

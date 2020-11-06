@@ -19,7 +19,7 @@
 
        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="this.$vuetify.breakpoint.smAndDown"></v-app-bar-nav-icon>
 
-      <v-toolbar-title class="mr-5">Gotham City</v-toolbar-title>
+      <v-toolbar-title class="mr-5" @click="goHome" :class="$style.mainTitle">Gotham City</v-toolbar-title>
 
       <div v-if="this.$vuetify.breakpoint.mdAndUp" class="d-flex">
         <v-btn value="Home" class="d-flex align-center" text @click="goTo('Home')">
@@ -120,6 +120,9 @@ export default {
   methods: {
     goTo(pathName) {
       this.$router.push({name: pathName})
+    },
+    goHome() {
+      this.$router.push({name: "Home"})
     }
   },
   watch: {
@@ -133,6 +136,10 @@ export default {
 <style lang="scss" module>
 .appBar {
   border-radius: 0px !important;
+}
+
+.mainTitle {
+  cursor: pointer;
 }
 
 .mainContainer {

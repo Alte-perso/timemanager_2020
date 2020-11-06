@@ -41,6 +41,11 @@ defmodule MyAppWeb.WorkingtimeController do
     |> render(:"404")
   end
 
+  def show_one_by_working_id(conn, %{"id" => id}) do 
+    workingtime = Account.get_working_by_id!(id)
+    render(conn, "showWorkingTime.json", workingtime: workingtime)
+  end
+
   def update(conn, %{"id" => id, "workingtime" => workingtime_params}) do
     workingtime = Account.get_workingtime!(id)
     with {:ok, %Workingtime{} = workingtime} <- Account.update_workingtime(workingtime, workingtime_params) do
