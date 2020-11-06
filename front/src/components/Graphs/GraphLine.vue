@@ -6,7 +6,7 @@
       :data="lineData"
       line-colors='[ "#FF6384", "#36A2EB" ]'
       xkey="day"
-      ykeys='["a", "b"]' 
+      ykeys='["SupHours"]' 
       grid="true"
       grid-text-weight="bold"
       resize="true">      
@@ -26,10 +26,10 @@ export default {
   data() {
     return {
       lineData: [
-        { day: "2020-11-01", a: 0, b:2 },
-        { day: "2020-11-02", a: 1, b:4 },
-        { day: "2020-11-03", a: 4, b:6 },
-        { day: "2020-11-04", a: 2, b:4 }, 
+        { day: "2020-11-01", SupHours: 0 },
+        { day: "2020-11-02", SupHours: 1 },
+        { day: "2020-11-03", SupHours: 4 },
+        { day: "2020-11-04", SupHours: 2 }, 
       ]
     };
   }

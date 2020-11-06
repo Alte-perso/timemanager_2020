@@ -13,16 +13,16 @@ jobs:
         - docker push seg78/api_timemanager
         - docker push seg78/front_timemanager
 
-    - stage: deploy code to aws elasticbeanstalk
-      deploy:
-        provider: elasticbeanstalk
-        region: "eu-west-3"
-        app: "timemanager-app"
-        env: "Timemanager-env"
-        bucket_name: "elasticbeanstalk-eu-west-3-323064516621"
-        bucket_path: "timemanager-app"
-        on:
-          branch: master
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_KEY
+#    - stage: deploy code to aws elasticbeanstalk
+#      deploy:
+#        provider: elasticbeanstalk
+#        region: "eu-west-3"
+#        app: "timemanager-app"
+#        env: "Timemanager-env"
+#        bucket_name: "elasticbeanstalk-eu-west-3-323064516621"
+#        bucket_path: "timemanager-app"
+#        on:
+#          branch: master
+#        access_key_id: $AWS_ACCESS_KEY_ID
+#        secret_access_key: $AWS_SECRET_KEY
 ...
