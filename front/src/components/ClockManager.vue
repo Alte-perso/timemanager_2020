@@ -134,7 +134,6 @@ export default {
       //get last clock from the connected user :
       this.axios.get(process.env.VUE_APP_URL_API + "clocks/" + this.userState.id + "/last")
       .then( data => {
-        console.log(data);
         this.lastClock.id = data.data.data.id;
         this.lastClock.status = data.data.data.status;
         this.lastClock.time = data.data.data.time;
@@ -162,7 +161,7 @@ export default {
           time: this.Clock.time
         }
       }).then(data => {
-        console.log(data);
+        console.log("======> Clock created : ", data)
         this.getLastClock();
       })
     }

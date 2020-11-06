@@ -84,9 +84,7 @@ import {EventBus} from "@/main.js"
       getTotalDurations() {
         let heures_temp=0, minutes_temp=0, secondes_temp=0, heures=0, minutes=0, secondes =0;
         this.durations.forEach(element => {
-          console.log(element.duration);
           heures_temp += parseInt(element.duration.split(":")[0]);
-          console.log("heure", heures_temp);
           minutes_temp += parseInt(element.duration.split(":")[1]);
           secondes_temp += parseInt(element.duration.split(":")[2]);
         })
@@ -100,7 +98,6 @@ import {EventBus} from "@/main.js"
         this.durations = [];
         this.axios.get(process.env.VUE_APP_URL_API + "workingtimes/" + this.userState.id + "?start=" + this.getStart) 
         .then( data => {
-          console.log(data.data.data);
           this.workingtimes = data.data.data;
           this.workingtimes.forEach(workingtime => {
             let working = new Object();

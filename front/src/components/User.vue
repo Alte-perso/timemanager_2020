@@ -261,7 +261,6 @@ export default {
     getUser(userId) {
       this.axios.get(process.env.VUE_APP_URL_API + "users/" + userId)
       .then( data => {
-        console.log(data);
         this.user.username = data.data.data.username;
         this.user.email = data.data.data.email;
         this.user.id = data.data.data.id;
@@ -321,7 +320,6 @@ export default {
         })
         .then(data => {
           this.loading = false;
-          console.log(data);
           this.user.username = data.data.data.username;
           this.user.email = data.data.data.email;
           this.user.id = data.data.data.id;

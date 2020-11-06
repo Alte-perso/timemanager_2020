@@ -170,7 +170,6 @@ export default {
     if (this.edit) {
           this.axios.get(process.env.VUE_APP_URL_API + "workingtime/" + this.working_id)
       .then(data => {
-        console.log(data);
         this.startDate = data.data.data.start.split("T")[0];
         this.endDate = data.data.data.end.split("T")[0];
         this.startHour = data.data.data.start.split("T")[1].slice(0, 5);
